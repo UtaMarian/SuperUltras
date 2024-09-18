@@ -1,0 +1,289 @@
+import React, { useContext, useEffect, useState } from 'react';
+import LeagueIcon from '../../assets/icons/icons8-league-64.png';
+import CoverImage from '../../assets/covers/cover_bets.jpg';
+import Badge from 'react-bootstrap/Badge';
+import { showNotification } from '../../utils/NotificationMan';
+import { formatMoney } from '../../utils/FormatMoney';
+import '../../styles/bets.css'; // Plain CSS for styling
+import { Modal, Button,Form } from 'react-bootstrap';
+import AuthContext from '../../AuthContext';
+
+const Bettings = () => {
+  const [activeTab, setActiveTab] = useState('today');
+  const [refresh, setRefresh] = useState(false);
+  const [userOptions, setUserOptions] = useState([]);
+  const [bets, setBets] = useState([]);
+  const [betAmount, setBetAmount] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const token = localStorage.getItem('token');
+  const { loadUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchBets = async () => {
+      try {
+        const res = await fetch(process.env.REACT_APP_API + '/match/user-bets', {
+          credentials: 'include',
+          headers: { 'x-auth-token': token },
+        });
+        const userBets = await res.json();
+        const userOptionsFromDb = userBets.map(bet => ({
+          userBetsId: bet._id,
+          matchId: bet.matchId,
+          option: bet.betOption,
+          winCash: bet.winCash,
+          status: bet.status,
+          betCash:bet.betCash,
+        }));
+        setUserOptions(userOptionsFromDb);
+
+        const betRes = await fetch(process.env.REACT_APP_API + '/bets/date/' + activeTab, {
+          credentials: 'include',
+          headers: { 'x-auth-token': token },
+        });
+        const _bets = await betRes.json();
+        setBets(_bets);
+      } catch (err) {
+        console.error(err);
+        showNotification("danger", "Failed", "Error fetching user bets");
+      }
+    };
+
+    fetchBets();
+  }, [refresh, activeTab]);
+
+  const handleShowModal = (matchId, option) => {
+    setSelectedMatch({ matchId, option });
+    setShowModal(true);
+  };
+  
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedMatch(null);
+    setBetAmount('');
+  };
+
+  const handlePlaceBet = async () => {
+    if (!selectedMatch || !betAmount) return;
+  
+    try {
+      const res = await fetch(process.env.REACT_APP_API + '/match/place-bet', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+        credentials: 'include',
+        body: JSON.stringify({ ...selectedMatch, betAmount }),
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        loadUser();
+        showNotification("success", "Success", data.msg);
+        setRefresh(prev => !prev);
+      } else {
+        showNotification("danger", "Failed", data.msg || "Error placing bet");
+      }
+    } catch (err) {
+      console.error(err);
+      showNotification("danger", "Failed", "Error placing bet");
+    }
+  
+    handleCloseModal();
+  };
+  // const handleBetSelection = async (matchId, option) => {
+  //   try {
+  //     const res = await fetch(process.env.REACT_APP_API + '/match/place-bet', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'x-auth-token': token,
+  //       },
+  //       credentials: 'include',
+  //       body: JSON.stringify({ matchId, option, betAmount }),
+  //     });
+  //     const data = await res.json();
+  //     if (res.ok) {
+  //       showNotification("success", "Success", data.msg);
+  //       setUserOptions(prevOptions => {
+  //         const existingOptionIndex = prevOptions.findIndex(selection => selection.matchId === matchId);
+  //         if (existingOptionIndex !== -1) {
+  //           const updatedOptions = [...prevOptions];
+  //           updatedOptions[existingOptionIndex].option = option;
+  //           return updatedOptions;
+  //         } else {
+  //           return [...prevOptions, { matchId, option }];
+  //         }
+  //       });
+  //     } else {
+  //       showNotification("danger", "Failed", data.msg || "Error placing bet");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     showNotification("danger", "Failed", "Error placing bet");
+  //   }
+  // };
+
+  const isSelected = (matchId, option) => {
+    return userOptions.find(selection => selection.matchId === matchId && selection.option === option) !== undefined;
+  };
+
+  const colectCash = async (id) => {
+    try {
+      const res = await fetch(process.env.REACT_APP_API + '/games-played/colectcash/' + id, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      });
+      const response = await res.json();
+      if (res.ok) {
+        loadUser();
+        showNotification("success", "Success", "Banii au fost colectati");
+      } else {
+        showNotification("danger", "EROARE", response.message);
+      }
+    } catch (err) {
+      showNotification("danger", "EROARE", err.message);
+    }
+  };
+
+  async function deleteBet(id){
+        
+    const delresponse = await fetch(process.env.REACT_APP_API+'/match/delete-bet/'+id, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      }
+    });
+    if(delresponse){
+        loadUser();
+        setRefresh(prev => !prev);
+      showNotification("success","Deleted","Pariul a fost sters");
+    }else{
+      showNotification("danger","Failed","Eroare la stergere");
+    }
+  }
+  return (
+    <>
+      <img src={CoverImage} alt="cover" className="cover_image_bets" />
+      <div className="bet-section-container">
+        <div className="tab-container">
+          <div className={`tab-item ${activeTab === 'yesterday' ? 'active' : ''}`} onClick={() => { setActiveTab('yesterday'); setRefresh(prev => !prev); }}>Ieri</div>
+          <div className={`tab-item ${activeTab === 'today' ? 'active' : ''}`} onClick={() => { setActiveTab('today'); setRefresh(prev => !prev); }}>Azi</div>
+          <div className={`tab-item ${activeTab === 'tomorrow' ? 'active' : ''}`} onClick={() => { setActiveTab('tomorrow'); setRefresh(prev => !prev); }}>Maine</div>
+        </div>
+
+        <div className="bet-section">
+          <h3>
+            <img src={LeagueIcon} alt="league" className="app_icon" />Meciuri
+          </h3>
+
+          {bets.length===0 ? <div className='no_betting_games'>Nu sunt meciuri disponibile</div>:bets.map((bet) => (
+            <div key={bet._id} className="match-container">
+              <div className='responsive_trash'></div>
+              <div>{new Date(bet.datetime).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</div>
+              <div>{bet.status === 'upcoming' ? '' : (bet.status === 'in_progress' ? <Badge bg="success">Live</Badge> : <Badge bg="danger">Finished</Badge>)}</div>
+              
+              <div className="team">
+                <img src={process.env.REACT_APP_LOGO + `/${bet.hometeam.imageUrl}`} alt="team1_logo" className="team_logo" />
+                <div className="team_name">{bet.hometeam.name}</div>
+              </div>
+              <span>VS</span>
+              <div className="team">
+                <img src={process.env.REACT_APP_LOGO + `/${bet.awayteam.imageUrl}`} alt="team2_logo" className="team_logo" />
+                <div className="team_name">{bet.awayteam.name}</div>
+              </div>
+
+              <div className='responsive_trash'></div>
+              
+              <div>
+                
+                {userOptions.find(option => option.matchId === bet._id) ? 
+                  <input type="text" disabled className="form-control bet-amount-input" value={ userOptions.find(option => option.matchId === bet._id).betCash +'💵'} onChange={ev => setBetAmount(ev.target.value)} />
+                :
+                  <></>
+                }
+                
+                 
+              </div>
+
+              {bet && bet.status === 'upcoming' && userOptions.find(option => option.matchId === bet._id) ?
+              <button className='btn btn-outline-danger' onClick={() => deleteBet(bet._id,true)}>X</button>
+              :<pre> </pre>}
+
+              <div className="options  bet-option-responsive">
+                <div className={`bet-option ${isSelected(bet._id, '1') ? 'selected' : ''}`} onClick={() => bet.status === 'upcoming' && handleShowModal(bet._id, '1')}>
+                  <div className="option-type">1</div>
+                  <div className="option-value">{bet.bet1}</div>
+                </div>
+                <div className={`bet-option ${isSelected(bet._id, 'X') ? 'selected' : ''}`} onClick={() => bet.status === 'upcoming' && handleShowModal(bet._id, 'X')}>
+                  <div className="option-type">X</div>
+                  <div className="option-value">{bet.betx}</div>
+                </div>
+                <div className={`bet-option ${isSelected(bet._id, '2') ? 'selected' : ''}`} onClick={() => bet.status === 'upcoming' && handleShowModal(bet._id, '2')}>
+                  <div className="option-type">2</div>
+                  <div className="option-value">{bet.bet2}</div>
+                </div>
+              </div>
+              <div className='responsive_trash'></div>
+              {userOptions.find(option => option.matchId === bet._id) && (
+                userOptions.find(option => option.matchId === bet._id).winCash > 0 ? (
+                  userOptions.find(option => option.matchId === bet._id).status === "colect" ? (
+                    <button className="btn btn-success colect-button" onClick={() => colectCash(userOptions.find(option => option.matchId === bet._id).userBetsId)}>
+                      {formatMoney(userOptions.find(option => option.matchId === bet._id).winCash)} 💵
+                    </button>
+                  ) : ( userOptions.find(option => option.matchId === bet._id).status === "created"?(
+                    <button disabled className="btn btn-warning colect-button">
+                      {formatMoney(userOptions.find(option => option.matchId === bet._id).winCash)} 💵
+                    </button>
+                  ):<button disabled className="btn btn-success colect-button">
+                  {formatMoney(userOptions.find(option => option.matchId === bet._id).winCash)} 💵
+                </button>)
+                ) : (
+                  <button disabled className="btn btn-danger colect-button-danger">
+                    {formatMoney(userOptions.find(option => option.matchId === bet._id).winCash)} 💵
+                  </button>
+                )
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Bet Modal */}
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Place Your Bet</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formBetAmount">
+                <Form.Label>Bet Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={betAmount}
+                  onChange={(e) => setBetAmount(e.target.value)}
+                  placeholder="Enter amount"
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handlePlaceBet}>
+              Place Bet
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </>
+  );
+};
+
+export default Bettings;

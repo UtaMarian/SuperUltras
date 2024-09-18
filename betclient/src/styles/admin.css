@@ -1,0 +1,150 @@
+.adminpanel{
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+.tabcontainer{
+    display: flex;
+    margin-bottom: 15px;
+    
+}
+.tabitem{
+    padding: 5px 15px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color:  #c7ff7d;
+    }
+}
+.same-row-input, .same-row-input-large{
+    display: flex;
+}
+.same-row-input button{
+    margin-left:20px;
+}
+.same-row-input-large .mb-3{
+    width: 50%;
+    
+}
+.same-row-input-large .leaguenamediv{
+    margin-right: 10px;
+}
+.active{
+    background-color: #c7ff7d;
+}
+
+.betnumberbox{
+    width: 70px;
+    text-align: center;
+}
+.same-row-input-bet{
+    display: flex;
+}
+.same-row-input-bet input, .same-row-input-bet select{
+    margin-inline: 10px;
+}
+.datetimebox{
+display: flex;
+    margin-top: 10px;
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.goals_input{
+    width: 50px;
+}
+/* Responsive styles */
+@media (max-width: 768px) {
+    .tabcontainer {
+      flex-direction: column;
+    }
+  
+    .tabitem {
+      font-size: 14px; /* Smaller font size for mobile */
+    }
+  
+    .tabcontent {
+      padding: 10px; /* Adjust padding for smaller screens */
+    }
+    .admin-table-responsive .table thead {
+        display: none; /* Hide headers on small screens */
+      }
+    
+      .table, .table tbody,  .admin-table-responsive  .table tr,  .admin-table-responsive  .table td {
+        display: block;
+        width: 100%;
+        border: none;
+        margin-bottom: 1rem;
+      }
+    
+      .admin-table-responsive .table tr {
+        margin-bottom: 0.5rem;
+      }
+    
+      .admin-table-responsive .table td {
+        text-align: left;
+        position: relative;
+
+      }
+    
+      .admin-table-responsive .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 1rem;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+    
+      .admin-table-responsive .table td:last-child {
+        text-align: center;
+      }
+    
+      .goals_input {
+        width: 100%; /* Full width on small screens */
+      }
+    
+      .btn {
+        width: 100%; /* Full width buttons */
+      }
+      .same-row-input-bet {
+        flex-direction: column; /* Stack elements horizontally on larger screens */
+        align-items: start;
+
+        margin-bottom: 10px;
+
+      }
+      .same-row-input-bet input{
+        width: 70px;
+        margin-bottom: 10px;
+      }
+      .same-row-input-bet select{
+        width: 150px;
+        margin-bottom: 10px;
+      }
+      #datetime_input{
+        width: 400px;
+        margin-bottom: 10px;
+      }
+     .datetimebox{
+        width: 300px;
+     }
+      .betnumberbox {
+        width: calc(33.333% - 1rem); /* Three inputs side-by-side with spacing */
+      }
+      
+      .datetimebox {
+        flex-direction: row; /* Place datetime input and button in a row */
+        align-items: center;
+        justify-content: flex-start;
+      }
+    
+      .btn {
+        width: auto; /* Default button width */
+      }
+  }

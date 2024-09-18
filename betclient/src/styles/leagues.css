@@ -1,0 +1,41 @@
+.index-league-container{
+    background-image: url('../assets//covers/login.jpg');
+    position: relative;
+    background-size: cover;     /* Ensures the image covers the entire area */
+    /* Centers the image */
+    background-repeat: no-repeat; 
+    height: 1000px;
+    padding: 50px;
+}
+table .table ,th ,tr ,td{
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+.user_bets_form{
+    display: flex;
+}
+.user_bets_form div{
+    width: 25px;
+    height: 25px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 1px;
+    margin-right: 5px;
+}
+
+.user_bets_form .W{
+    background-color: green;
+}
+.user_bets_form .L{
+    background-color: rgb(173, 0, 0);
+}
+@media (max-width: 768px) {
+    .index-league-container{
+        padding: 5px;
+    }
+    .table-league .responsive_hidden{
+        display: none;
+    }
+
+
+}

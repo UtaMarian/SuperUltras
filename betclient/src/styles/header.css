@@ -1,0 +1,112 @@
+.my_bet_icon{
+    width: 25px;
+    margin-right: 5px;
+}
+
+.my_bet_button{
+    background-color: transparent !important;
+    color: whitesmoke;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(170, 170, 170);
+    margin-right: 10px;
+    display: flex;
+}
+
+
+.mybet_body_match{
+    display: grid;
+    grid-template-columns: 100px 50px 150px 20px 150px 50px 60px 100px;
+ 
+    padding: 10px;
+    text-align: center;
+    vertical-align:middle;
+    justify-content: center;
+}
+.team_logo_modal{
+    width: 25px;
+}
+.button-text {
+    display: inline-block; /* Default display for text */
+    color: whitesmoke;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #c31432;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: #fff;
+}
+
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.app-icon {
+  width: 24px;
+  height: 24px;
+}
+
+
+.stats {
+  display: flex;
+  align-items: center;
+}
+
+.stats > div {
+  margin-right: 15px;
+}
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .my_bet_button {
+      padding: 5px; /* Adjust padding to center the icon nicely */
+    }
+  
+    .button-text {
+      display: none; /* Hide the text on mobile */
+    }
+  
+    .my_bet_icon {
+      margin-right: 0; /* Remove margin when text is hidden */
+    }
+    header {
+      padding: 10px;
+    }
+  
+    .app_icon {
+      width: 25px;
+      height: 25px;
+    }
+  
+    .my_bet_icon {
+      width: 20px;
+      height: 20px;
+    }
+  
+    .my_bet_button {
+      font-size: 0.8em;
+    }
+  
+    .mybet_body_match {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+  
+    .team_logo_modal {
+      width: 30px;
+      height: 30px;
+    }
+  }

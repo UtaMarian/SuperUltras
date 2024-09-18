@@ -1,0 +1,215 @@
+.index-home-container{
+    background-image: url('../assets//covers/login.jpg');
+    position: relative;
+    background-size: cover;     /* Ensures the image covers the entire area */
+    /* Centers the image */
+    background-repeat: no-repeat; 
+    height: 1000px;
+    padding: 20px;
+    display: flex;
+}
+.author_avatar{
+    width: 40px;
+    margin-right: 10px;
+}
+  
+  .left-side {
+    width: 50%;
+    margin-right: 20px;
+  }
+  
+  .right-side {
+    width: 50%;
+  }
+  
+  .thread-input-container {
+    flex-direction: column;
+    margin-bottom: 20px;
+    display: flex;
+  }
+  
+  .thread-input {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+    margin-right: 20px;
+  }
+  
+  .add-thread-button {
+    align-self: flex-end;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .threads-list {
+    margin-top: 20px;
+  }
+  
+  .thread-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+  
+  .thread-author-time {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .author-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .thread-actions {
+    display: flex;
+    justify-content:end;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .comments-section {
+    margin-top: 10px;
+    padding-left: 10px;
+  }
+  
+  .comment {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+  .comment-header{
+    display: flex;
+    justify-content: space-between;
+  }
+  .comment-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .events-container, .league-container, .matches-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  h3 {
+    margin-bottom: 10px;
+    background: #c31432;  
+    background: -webkit-linear-gradient(to right, #240b36, #c31432);  
+    background: linear-gradient(to right, #240b36, #c31432); 
+    padding: 10px;
+    color: white;
+  }
+  
+  .delete-button{
+    background-color: transparent;
+    border: 1px solid rgb(255, 0, 0);
+    border-radius: 5px;
+    color:red;
+    /* margin-right: 0px;
+    margin-left: auto;
+    position: relative;
+    right: 10px; */
+    cursor: pointer;
+  }
+  .delete-button:hover{
+    background-color: red;
+    color:white;
+    transition: 300ms ease-in;
+  }
+
+  .top_players_worlwide{
+    background-color: whitesmoke !important;
+
+  }
+  .top_players_worlwide th{
+    background-color: #cee1ff !important;
+  }
+
+.event-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  background-color: rgb(39, 46, 53);
+  color:white
+}
+
+.event-image {
+  flex: 1;
+  position: relative;
+  width: 50%; /* Adjust to your need */
+}
+
+.event-image img {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+}
+
+.event-text {
+  flex: 1;
+  padding-left: 20px;
+}
+
+
+.event-text p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.event-container:hover img{
+  width: 115%;
+  transition: 300ms ease-in;
+  
+}
+/* Responsive Layout: Mobile */
+@media (max-width: 768px) {
+  .index-home-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .left-side,
+  .right-side {
+    width: 100%;
+    padding: 0;
+  }
+
+  .right-side {
+    margin-top: 20px;
+  }
+  .top_players_worlwide, .top_players_worlwide thead, .top_players_worlwide tr,.top_players_worlwide td{
+    width: 100%;
+  }
+  .top_players_worlwide td{
+    width: 33%;
+  }
+}

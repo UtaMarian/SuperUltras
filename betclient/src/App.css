@@ -1,0 +1,52 @@
+/* src/App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  font-family: "Roboto Slab", serif;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+h3 {
+  margin-top: 0;
+  color: #444;
+}
+
+span {
+  color: #666;
+  font-weight: bold;
+  margin: 0 15px;
+}
+
+.tab-active {
+  background-color: #ddd !important;
+}
+
+.app_icon{
+  height: 25px;
+  
+}
+.bet-section{
+  margin-top: 30px;
+}
+.navbar_icon{
+  height: 20px;
+}
+a{
+  text-decoration: none !important;
+  color:white;
+}
+
+
+.loader-container{
+  display: flex ;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+}

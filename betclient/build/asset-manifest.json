@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e5c97a85.css",
+    "main.js": "/static/js/main.83eeda28.js",
+    "static/media/login.jpg": "/static/media/login.4b3f60543cd2ba2dc57d.jpg",
+    "static/media/cover_bets.jpg": "/static/media/cover_bets.91f37ae4f12473830738.jpg",
+    "static/media/soccer-ball.png": "/static/media/soccer-ball.8a113bfc480189011196.png",
+    "static/media/man.png": "/static/media/man.ab45eb1d42b1faaf3d12.png",
+    "static/media/money.png": "/static/media/money.392fb135d8279f2808ae.png",
+    "static/media/bet.png": "/static/media/bet.85ac0b9c761e968af39e.png",
+    "static/media/menu-bar.png": "/static/media/menu-bar.f9dda2c356d3595121fa.png",
+    "static/media/logout.png": "/static/media/logout.6c4f8e8fd49324f8e880.png",
+    "static/media/romania.png": "/static/media/romania.890c224945a0aa8b2975.png",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.e5c97a85.css",
+    "static/js/main.83eeda28.js"
+  ]
+}

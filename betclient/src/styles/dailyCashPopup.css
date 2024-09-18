@@ -1,0 +1,11 @@
+.rank_up_logo{
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.rank_up_div{
+  display: flexbox;
+  text-align: center;
+  align-items: center;
+}

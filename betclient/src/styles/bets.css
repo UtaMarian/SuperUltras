@@ -1,0 +1,310 @@
+.bet-option{
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #4d73fe;
+      color: rgb(0, 0, 0);
+      .option-value{
+        color:rgb(0, 0, 0);
+      }
+      .option-type{
+        color:rgb(0, 0, 0);
+      }
+    }
+}
+
+.save_btn{
+  position: relative;
+  top: -10px;
+  left: 92%;
+}
+.cover_image_bets{
+  width: 100%;
+  height: 250px;
+  display: block; /* Removes extra space below the image (inline-block by default) */
+  object-fit: cover;
+  object-position: 0px -80px; 
+  
+}
+.team_logo{
+  width: 40px;
+  display: block; 
+  margin-right: 10px;
+}
+
+.live_bet_circle{
+  background-color: green;
+  color: whitesmoke;
+  border-radius: 100px;
+  text-align: center;
+  padding: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  animation: breathe 3s linear infinite;
+}
+@keyframes breathe {
+  0% {
+   box-shadow: 0 0 0 7px rgba(50, 138, 50, 0.3)
+  }
+ }
+.finished_bet_circle{
+  background-color: rgb(255, 0, 0);
+  color: whitesmoke;
+  border-radius: 100px;
+  text-align: center;
+}
+.colect-button{
+  display: flex !important;
+  color: white;
+  border-radius: 3px;
+  padding: 5px 5px;
+  justify-content: center;
+}
+.colect-button:hover{
+  transition: background-color 0.3s ease;
+  
+}
+.colect-button-danger{
+  display: flex !important;
+  color: white;
+  border-radius: 3px;
+  padding: 5px 5px;
+  justify-content: center;
+}
+.bet-amount-input{
+  width: 60px;
+}
+
+/* General styles */
+.cover_image_bets {
+  width: 100%;
+  height: 250px;
+  display: block; /* Removes extra space below the image (inline-block by default) */
+  object-fit: cover;
+  object-position: 0px -80px;
+}
+
+
+
+
+
+.tab-item {
+  cursor: pointer;
+  padding: 5px 15px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.tab-item.active {
+  background-color: #a9ff38;
+}
+
+.match-container {
+  display: grid;
+  grid-template-columns: 60px 80px 300px 100px 300px 60px 40px 240px 80px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.no_betting_games{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bets_history{
+  font-size: 20px;
+  background: #c31432;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #240b36, #c31432);
+  text-align: center;
+  padding: 10px 20px;
+  color:white;
+}
+.team {
+  display: flex;
+  align-items: center;
+}
+
+
+.bet-amount-input {
+  width: 60px;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+}
+
+.bet-option {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: 0.1px solid #a7a7a7;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+   width: 100%;
+   display: flex;
+}
+.option-type{
+margin-right: auto;
+}
+.option-value{
+  margin-left: auto;
+}
+
+.bet-option:hover {
+  background-color: #f0f0f0;
+}
+
+.bet-option.selected {
+  background-color: #68ac8c;
+  color: white;
+}
+
+.colect-button {
+  margin-left: 10px;
+}
+
+.colect-button-danger {
+  margin-left: 10px;
+  background-color: red;
+  color: white;
+}
+
+.option-type {
+  font-weight: bold;
+}
+
+.option-value {
+  font-style: oblique;
+}
+
+.responsive_trash{
+  display: none;
+}
+
+
+@media (max-width: 480px) {
+  .match-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* Responsive styles */
+@media (max-width: 768px) {
+  .cover_image_bets {
+    height: 200px; /* Adjust height for smaller screens */
+  }
+
+  .responsive_trash{
+    display: none;
+  }
+  .team_logo {
+    width: 30px; /* Smaller logo on mobile */
+  }
+
+  .match-container {
+    grid-template-columns: 1fr 1fr ; /* Stack columns for smaller screens */
+    padding: 5px;
+  }
+
+  .bet-amount-input {
+    width: 100%; /* Full width input on mobile */
+  }
+
+  .options {
+    flex-direction: column; /* Stack options vertically */
+  }
+
+  .bet-option {
+    width: 100%; /* Full width option buttons on mobile */
+    margin-bottom: 5px;
+  }
+
+  .colect-button {
+    padding: 8px; /* Larger padding on mobile for better touch targets */
+  }
+}
+
+@media (max-width: 480px) {
+  .cover_image_bets {
+    height: 150px; /* Further reduce height for very small screens */
+  }
+
+  .team_logo {
+    width: 25px; /* Even smaller logo on very small screens */
+  }
+
+  .match-container {
+    grid-template-columns: 1fr 1fr 1fr; /* Single column layout on very small screens */
+    gap: 10px;
+    text-align: center;
+  }
+
+  .responsive_trash{
+    display: block;
+  }
+ 
+  .bet-amount-input {
+    margin:auto;
+    width: 70%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  /* .options {
+    flex-direction: column;
+  } */
+  .bet-option-responsive{
+    display: flex;
+    flex-direction: row;
+    grid-column: span 3;
+  }
+
+  .bet-option {
+    width: 100%;
+    font-size: 14px; /* Adjust font size */
+    margin-bottom: 5px;
+    
+  }
+}
+
+.bet-section-container {
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.tab-container {
+  display: flex;
+  margin-bottom: 15px;
+  flex-direction: column;
+}
+
+@media (min-width: 769px) {
+  .tab-container {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 768px) {
+  .bet-option {
+    width: 100%;
+    font-size: 14px;
+  }
+}
