@@ -5,7 +5,6 @@ import {Routes,Route} from 'react-router-dom';
 import styled from 'styled-components';
 import './App.css';
 
-import BetSection from './components/BetSection';
 import AdminPanel from './pages/AdminPanel';
 import Layout from './pages/Layout';
 import Homepage from './pages/homepage/Homepage';
@@ -17,6 +16,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import LogoutButton from './components/LogoutButton';
 import IndexLeague from './pages/standings/IndexLeague';
+import IndexClub from './pages/club/IndexClub';
 import Profile from './pages/profile/Profile';
 import Bettings from './pages/bettings/Bettings';
 
@@ -43,6 +43,7 @@ function App() {
             element={<PrivateRoute component={AdminPanel} allowedRoles={['admin','moderator']} />} 
           />
           <Route path='/leagues' element={<PrivateRoute component={IndexLeague} />} />
+          <Route path='/club' element={<PrivateRoute component={IndexClub} />} />
         </Route>
       </Routes>
     </AppContainer>

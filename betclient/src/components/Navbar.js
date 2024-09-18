@@ -45,6 +45,12 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="nav-item">
+          <Link to="/club" onClick={toggleMenu}>
+            <img src={LeagueIcon} alt="club" className="navbar_icon" />
+            Club
+          </Link>
+        </div>
+        <div className="nav-item">
           <Link to="/profile" onClick={toggleMenu}>
             <img src={ProfileIcon} alt="profile" className="navbar_icon" />
             Profil
