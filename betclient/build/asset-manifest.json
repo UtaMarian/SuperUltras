@@ -1,9 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.e5c97a85.css",
-    "main.js": "/static/js/main.83eeda28.js",
+    "main.css": "/static/css/main.647158b1.css",
+    "main.js": "/static/js/main.1ff9bccf.js",
+    "static/media/field2.jpg": "/static/media/field2.17d08c2df10cb0ce8411.jpg",
+    "static/media/trophies.png": "/static/media/trophies.f1fec24c274e838a0eb1.png",
     "static/media/login.jpg": "/static/media/login.4b3f60543cd2ba2dc57d.jpg",
     "static/media/cover_bets.jpg": "/static/media/cover_bets.91f37ae4f12473830738.jpg",
+    "static/media/icon_player.png": "/static/media/icon_player.564ccae48a9cdf3bd1fb.png",
+    "static/media/placeholder-card-normal.png": "/static/media/placeholder-card-normal.6dee8d80c71563370e6e.png",
     "static/media/soccer-ball.png": "/static/media/soccer-ball.8a113bfc480189011196.png",
     "static/media/man.png": "/static/media/man.ab45eb1d42b1faaf3d12.png",
     "static/media/money.png": "/static/media/money.392fb135d8279f2808ae.png",
@@ -14,7 +18,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.e5c97a85.css",
-    "static/js/main.83eeda28.js"
+    "static/css/main.647158b1.css",
+    "static/js/main.1ff9bccf.js"
   ]
 }

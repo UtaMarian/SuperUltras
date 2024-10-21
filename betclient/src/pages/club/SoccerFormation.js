@@ -62,6 +62,7 @@ const Player = ({ player, index }) => {
             </div>
       </td>
       <td className="tableplayer-matches">{player.influence}</td>
+      <td ><button className='btn btn-outline-danger'>X</button></td>
     </tr>
   );
 };
@@ -180,6 +181,7 @@ const SoccerFormation = () => {
                   <th>Level</th>
                   <th>Goals</th>
                   <th>Matches</th>
+                  <th>X</th>
                 </tr>
               </thead>
               <tbody>
