@@ -15,6 +15,7 @@ const gamesPlayedRoutes =require("./routes/gamesPlayedRoutes.js");
 const userBetsRoutes =require("./routes/userBetsRoutes.js");
 const threadRoutes =require("./routes/threadRoutes.js");
 const rankRoutes =require("./routes/rankRoutes.js");
+const ultrasLeagueRoutes =require("./routes/ultrasLeagueRoutes.js");
 const auth = require('./middleware/auth'); 
 
 const updateMatchStatus = require('./services/updateMatchStatus'); 
@@ -64,6 +65,7 @@ app.use('/api/match',auth, userBetsRoutes);
 app.use('/api/games-played',auth, gamesPlayedRoutes);
 app.use('/api/posts',auth, threadRoutes);
 app.use('/api/ranks',auth, rankRoutes);
+app.use('/api/ultrasleague', ultrasLeagueRoutes);
 
 updateMatchStatus();
 

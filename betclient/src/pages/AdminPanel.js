@@ -8,6 +8,7 @@ import UserComponent from './admin/UserComponent';
 import GamesPlayedComponent from './admin/GamesPlayedComponent';
 import RankComponent from './admin/RankComponent';
 import AuthContext from '../AuthContext';
+import UltrasLeagueAdminComponent from './admin/UltrasLeagueAdmin';
 
 function AdminPanel() {
   const { user } = useContext(AuthContext);
@@ -29,6 +30,8 @@ function AdminPanel() {
             return <GamesPlayedComponent />;
         case 'Rank':
             return <RankComponent />;
+        case 'UltrasLeague':
+            return <UltrasLeagueAdminComponent />;
         default:
             return null;
     }
@@ -84,6 +87,12 @@ console.log(isModerator);
           onClick={() => setActiveTab('Bet')}
         >
           Pariuri
+        </div>
+        <div
+          className={`tabitem ${activeTab === 'UltrasLeague' ? 'active' : ''}`}
+          onClick={() => setActiveTab('UltrasLeague')}
+        >
+          UltrasLeague
         </div>
         </div>
         <div className='tabcontent'>
