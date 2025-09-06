@@ -37,9 +37,9 @@ app.use('/api/teamslogo', express.static(__dirname + '/teamslogo'));
 app.use('/api/rankicons', express.static(__dirname + '/rankicons'));
 app.use('/api/userspicture', express.static(__dirname + '/userspicture'));
 
-//cors http://flashumi.eastus.cloudapp.azure.com
+
 //app.use(cors({credentials:true,origin:["http://localhost:3000", "http://192.168.1.130:3000", "http://192.168.1.128"]}));
-//prod bet app - http://flash.eastus.cloudapp.azure.com:5000
+
 app.use(cors({credentials:true,origin:[FRONTEND_URI, "*"]}));
 
 
