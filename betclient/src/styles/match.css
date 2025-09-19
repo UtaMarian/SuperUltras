@@ -1,0 +1,223 @@
+.match-page{
+
+  /* background: linear-gradient(to right, #240b36, #c31432); */
+    background-image: url('../assets//covers/game_bg.png');
+    position: relative;
+
+    background-size: auto;       /* don’t stretch */
+  background-position: top left;
+    min-height: 820px;
+}
+
+
+
+
+
+.match-container {
+
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 0px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+   max-width: 1200px;
+
+}
+
+.match-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* 3 columns: left | center | right */
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+   width: 100%;
+}
+
+/* Teams */
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  padding: 10px 15px;
+}
+
+.team-left {
+  /* text-align: left; */
+  align-items: center;
+  justify-self: start;
+  display: flex;
+  gap: 12px;
+}
+
+.team-right {
+  /* text-align: right; */
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.team-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background-color: #f3f4f6;
+  padding: 5px 10px;
+  border-radius: 12px;
+
+  /* efect de buton apăsat */
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2),
+              inset -2px -2px 5px rgba(255,255,255,0.8);
+  
+}
+.team-info-container h3{
+  border-radius: 10px;
+}
+.team-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(to bottom, #f9fafb, rgba(255,255,255,0.4));
+  box-shadow: inset 1px 1px 5px rgba(0,0,0,0.2),
+              inset -1px -1px 5px rgba(255,255,255,0.8);
+  
+  min-width: 300px;
+  padding: 10px;
+    border-radius: 10px;
+}
+
+
+.team-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+
+
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold; 
+
+}
+
+.stat.power {
+  background-color:  #c31432;
+  color: white;
+}
+
+.stat.supporters {
+  background-color: #374151;
+  color: white;
+}
+
+/* Center */
+.match-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+   justify-self: center;
+  text-align: center;
+  gap: 6px;
+  width: 150px;
+}
+
+
+
+.timer {
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 8px;
+}
+
+/* Tabs */
+.tabcontainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 5px;
+ 
+  padding: 0.5rem 1rem;
+  
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  margin-top: 0px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* fiecare tab */
+.tabitem {
+  position: relative;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #374151; /* gri-închis */
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+}
+
+/* efect hover */
+.tabitem:hover {
+  background: #e0f2fe;   /* albastru foarte deschis */
+  color: #1d4ed8;        /* albastru accent */
+}
+
+/* tab activ */
+.tabitem.active {
+  background: #481053;   /* albastru intens */
+  color: white;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15) inset;
+}
+
+/* underline animat pentru active */
+.tabitem.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #c31432; /* roșu accent pentru contrast */
+  border-radius: 2px;
+  animation: slideIn 0.3s ease forwards;
+}
+
+.final-score{
+  font-size: 3rem;
+  font-weight:bold;
+  color: #ffffff; /* verde pentru scor final */
+}
+.scorers{
+  display: flex;
+}
+.finished-info{
+  display: inline-block;
+  text-align: center;
+}
+/* animație pentru underline */
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* conținut tab */
+.tabcontent {
+  
+
+  padding: 0.5rem;
+ 
+}

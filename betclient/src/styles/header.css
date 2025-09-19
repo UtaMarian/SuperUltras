@@ -48,6 +48,7 @@ background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, F
 .logo {
   font-size: 1.5em;
   font-weight: bold;
+  display: flex;
 }
 
 .app-icon {

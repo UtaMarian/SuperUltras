@@ -14,6 +14,23 @@ const Register = () => {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate(); 
   
+  const [position, setPosition] = useState('ST');
+
+  // Mic helper cu explicații pentru poziții
+const positionHelper = {
+  GK: "Portar (GK) – Fii eroul echipei! Ultima barieră împotriva golurilor adversarilor.",
+  LB: "Fundaș stânga (LB) – Oprește atacurile de pe bandă și sprijină ofensiva echipei.",
+  CB: "Fundaș central (CB) – Stâlpul apărării, domină duelurile aeriene și blochează șuturile.",
+  RB: "Fundaș dreapta (RB) – Apără partea dreaptă și lansează atacuri rapide pe flanc.",
+  CM: "Mijlocaș central (CM) – Inima echipei, distribuie pase și controlează ritmul jocului.",
+  LM: "Mijlocaș stânga (LM) – Energie pe bandă, oferă pase decisive și susține atacul.",
+  RM: "Mijlocaș dreapta (RM) – Rapid și creativ, creează ocazii de gol din flancul drept.",
+  LW: "Extremă stânga (LW) – Viteză și dribling, rupe apărarea și oferă centrări periculoase.",
+  RW: "Extremă dreapta (RW) – Exploziv și imprevizibil, creează haos în apărarea adversă.",
+  ST: "Atacant (ST) – Marcatorul suprem! Transformă ocaziile în goluri și câștigă meciurile.",
+};
+
+
   useEffect(() => {
     // Fetch teams from the API
     async function fetchTeams() {
@@ -32,7 +49,7 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await register(username, email, password, favoriteTeam); // Pass favoriteTeam to register function
+      await register(username, email, password, favoriteTeam,position); // Pass favoriteTeam to register function
       navigate('/');
     } catch (error) {
       console.error('Registration failed:', error);
@@ -85,6 +102,25 @@ const Register = () => {
               </option>
             ))}
           </Form.Control>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Position</Form.Label>
+          <Form.Control
+            as="select"
+            value={position}
+            onChange={ev => setPosition(ev.target.value)}
+            required
+          >
+            <option value="">Select your position</option>
+            {Object.keys(positionHelper).map(pos => (
+              <option key={pos} value={pos}>
+                {pos} – {positionHelper[pos]}
+              </option>
+            ))}
+          </Form.Control>
+          <small className="text-muted">
+            {position && positionHelper[position]}
+          </small>
         </Form.Group>
         <button type="submit" className="btn btn-secondary">Register</button>
       </form>

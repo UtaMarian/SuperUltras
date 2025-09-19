@@ -14,7 +14,6 @@
 }
 
 
-
 .profile-picture {
   width: 120px;  /* Set the desired width */
   height: 120px; /* Set the desired height */
@@ -39,8 +38,8 @@
 }
 
 .country-flag img {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 15px;
   margin-right: 10px;
   border-radius: 3px;
 }
@@ -50,7 +49,9 @@
   height: 20px;
   margin-left: 10px;
 }
-
+.club-team-picture{
+  width: 50px !important;
+}
 .profile-stats {
   display: flex;
   align-items: center;
@@ -118,7 +119,7 @@
 .favorite-team p{
   margin-right: 20px;
 }
-.team-info{
+.team-info-box{
   background-color: #4a4c52;
   border: none;
   border-radius: 5px;
@@ -131,15 +132,18 @@
   background-color: #990000;
   border: none;
   border-radius: 5px;
-  padding: 5px;
+ 
   margin-left: 15px;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.2s;
   
 }
+.role-info:hover{
+  background-color: #c50303;
+}
 .user-role-name{
-  font-size: 14px;
+  font-size: 18px;
   color:white;
 }
 .score_bet_final{
@@ -181,6 +185,23 @@
 }
 .responsive_trash{
   display: none;
+}
+
+.mvp-icon{
+  width: 100%;
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.profile-div{
+background-image: url('../assets/covers/game_bg.png');
+    position: relative;
+   
+}
+.player-bio-stats{
+   
+    height: 1000px;
 }
 /* Mobile Styles */
 @media (max-width: 768px) {

@@ -8,4 +8,17 @@
   display: flexbox;
   text-align: center;
   align-items: center;
+  background-color: aliceblue;
+}
+.rank-up-container{
+    background-image: url('../assets//covers/game_bg.png');
+    position: relative;
+    background-size: cover; 
+}
+
+.reward-container{
+   /* background-image: url('../assets//covers/field.jpg');
+    position: relative;
+    background-size: cover; 
+    background-position: 0px -90px; */
 }

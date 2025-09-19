@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import '../../styles/profile.css';
 import CashIcon from '../../assets/icons/money.png';
 import CoinIcon from '../../assets/icons/soccer-ball.png';
@@ -9,25 +9,35 @@ import { showNotification } from '../../utils/NotificationMan.js';
 import '../../styles/header.css';
 import '../../styles/bets.css';
 import BarLoader from 'react-spinners/BarLoader';
+import MvpIcon from '../../assets/icons/mvp.png';
+import PlayerStatsCard from './PlayerStatsCard.js';
+import { useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const token = localStorage.getItem("token");
+  const currentUserId = token ? jwtDecode(token).id : null;
+  const isOwnProfile = id === currentUserId;
 
-  const [bets, setBets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({
-    username: '',
-    email: '',
-    cash: 0,
-    coins: 0,
-    favTeam: '',
-    profilePicture: '',
-    rank: { name: '', icon: '' },
-    joinDate: '',
-    lastSeen: ''
-  });
+  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState({
+  //   username: '',
+  //   email: '',
+  //   cash: 0,
+  //   coins: 0,
+  //   favTeam: '',
+  //   profilePicture: '',
+  //   rank: { name: '', icon: '' },
+  //   joinDate: '',
+  //   lastSeen: ''
+  // });
 
-  const [teams, setTeams] = useState([]);  // For storing teams list
-  const [file, setFile] = useState(null);  // For storing selected file
+  const [teams, setTeams] = useState([]);  
+  const [file, setFile] = useState(null);  
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -44,35 +54,31 @@ const Profile = () => {
   
   // Fetch user data and teams data when component mounts
   useEffect(() => {
-    try{
-      setLoading(true);
-    async function fetchUserData() {
+    async function fetchUser() {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(process.env.REACT_APP_API + '/users/profile', {
-          credentials: 'include',
-          headers: {
-            'x-auth-token': token
-          }
+        setLoading(true);
+        const endpoint = id 
+        ? `${process.env.REACT_APP_API}/users/profile/${id}` 
+        : `${process.env.REACT_APP_API}/users/profile`;
+        const res = await fetch(endpoint, {
+          credentials: "include",
+          headers: { "x-auth-token": token },
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+        if(res.ok){
+          const data = await res.json();
+          setUser(data);
+          setFormData( { username: data.username,
+            email: data.email,
+            favTeam: data.favTeam._id,
+            profilePicture:data.profilePicture});
         }
-
-        const data = await response.json();
-        setUser(data);
-        setFormData({
-          username: data.username,
-          email: data.email,
-          favTeam: data.favTeam._id,
-          profilePicture: data.profilePicture
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+      } catch (err) {
+        console.error("Error loading user:", err);
+       
+      } finally {
+        setLoading(false);
       }
     }
-
     async function fetchTeams() {
       try {
         const response = await fetch(process.env.REACT_APP_API + '/teams', {
@@ -89,37 +95,16 @@ const Profile = () => {
         console.error('Error fetching teams:', error);
       }
     }
-
-    async function fetchUserBets() {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(process.env.REACT_APP_API + '/match/user-finish-bets', {
-          credentials: 'include',
-          headers: {
-            'x-auth-token': token
-          }
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to fetch user bets');
-        }
-  
-        const betsData = await response.json();
-     
-        setBets(betsData);
-      } catch (error) {
-        console.error('Error fetching user bets:', error);
-      }
-    }
-    fetchUserData();
     fetchTeams();
-    fetchUserBets();
-  } catch (error) {
-    showNotification("danger", "Failed", "Error while fetching data");
-  } finally {
-    setLoading(false); 
-  }
-  }, []);
+    fetchUser();
+  }, [id,token]);
+
+  if (loading) 
+    return <div className="loader-container">
+              <BarLoader color="white" loading={loading} width={340}  height={6}/>
+          </div>
+  ;
+  if (!user) return <div>User not found</div>;
 
   const handleChange = (e) => {
     setFormData({
@@ -208,69 +193,119 @@ const Profile = () => {
 
   return (
     <>
-     {loading ? (
-        <div className="loader-container">
-          <BarLoader color="white" loading={loading} width={340}  height={6}/>
-        </div>
-      ) : (
+  
   <div className='profile-div'>
     <div className="profile-container">
-      <div className="profile-header">
-        {user.profilePicture?<img src={process.env.REACT_APP_LOGO + `/${user.profilePicture}` } alt="Profile" className="profile-picture" /> :<img src={DefaultProfilePicture} alt="Profile" className="profile-picture" />}
-        
-        <div className="profile-info">
-          <h2 className="profile-username">
-            <span className="country-flag">
-              <img src={CountryIcon} alt="Flag" />
-            </span>
-            {user.username}
-            {user.role && user.role!=="user"?  
-            <div className="role-info">
-                <span className="user-role-name">{user.role.toUpperCase()}</span>
-            </div>:<></>}
+      <div className="profile-header flex flex-col md:flex-row items-center justify-between shadow-lg p-6 gap-6">
+  
+  {/* Profile Picture */}
+  <div className="flex items-center gap-4">
+    <img
+      src={
+        user.profilePicture
+          ? process.env.REACT_APP_LOGO + `/${user.profilePicture}`
+          : DefaultProfilePicture
+      }
+      alt="Profile"
+      className="w-24 h-24 rounded-full border-4 border-pink-500/50 shadow-md object-cover"
+    />
+    
+    {/* Main Info */}
+    <div className="profile-info space-y-2">
+      <h2 className="profile-username flex items-center gap-2 text-2xl font-bold text-white">
+        {/* Flag */}
+      
+        {user.username}
+        {/* Role */}
+        {user.role && user.role !== "user" && (
+          <span className="ml-2 px-3 py-1 text-xs font-semibold uppercase 
+                           bg-gradient-to-r from-pink-600 to-fuchsia-700 
+                           text-white rounded-full shadow">
+            {user.role}
+          </span>
+          
+        )
+        }
+         {(user._id===user.favTeam.manager) && <span className="ml-2 px-3 py-1 text-xs font-semibold uppercase 
+                           bg-gradient-to-r from-pink-600 to-fuchsia-700 
+                           text-white rounded-full shadow">
+            manager
+          </span> }
+      </h2>
+
+      {/* Rank */}
+      <div className="profile-stats flex items-center gap-2 text-gray-200">
+        <p className="font-semibold">Rank:</p>
+        <img
+          src={process.env.REACT_APP_LOGO + `/${user.rank.icon}`}
+          alt={user.rank.name}
+          title="Rank"
+          className="w-8 h-8"
+        />
+        <span className='text-white'>{user.rank.name}</span>
+      </div>
+
+      {/* Meta Info */}
+      <div className="profile-meta text-sm text-gray-400">
+        <p>{t("profile.joined")}: {new Date(user.createdAt).toDateString()}</p>
+        <p>{t("profile.seen")}: {new Date(user.lastLogin).toDateString()}</p>
+      </div>
+
+      {/* Favorite Team */}
+      {user.favTeam && (
+        <div className="favorite-team flex items-center gap-2 text-sm text-gray-200">
+          <p className="font-semibold">{t("profile.favoriteTeam")}:</p>
+          <div className="team-info flex items-center gap-2">
+            <img
+              src={process.env.REACT_APP_LOGO + `/${user.favTeam.imageUrl}`}
+              alt={user.favTeam.name}
+              className="w-10 h-10 "
+            />
+            <span className='text-white'>{user.favTeam.name}</span>
            
-          </h2>
-          <div className="profile-stats">
-            <span className="profile-rank">
-              <img src={process.env.REACT_APP_LOGO + `/${user.rank.icon}`} alt={user.rank.name} title="Rank" className="rank-icon"/>
-              {user.rank.name}
-            </span>
-            <span className="profile-points">
-              <img src={CashIcon} alt="Points" className='money-icons' title="Money" />
-              {user.cash}
-            </span>
-            <span className="profile-coins">
-              <img src={CoinIcon} alt="Coins" className='money-icons' title="Coins" />
-              {user.coins}
-            </span>
           </div>
-          <div className="profile-meta">
-            <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
-            <p>Last seen: {user.lastSeen}</p>
-          </div>
-          {user.favTeam && (
-            <div className="favorite-team">
-              <p>Echipa favorita:</p>
-              <div className="team-info">
-                <img src={process.env.REACT_APP_LOGO + `/${user.favTeam.imageUrl}`} alt={user.favTeam.name} className="favorite-team-logo" />
-                <span className="favorite-team-name">{user.favTeam.name}</span>
-              </div>
-            </div>
-          )}
         </div>
-        <div className="profile-actions">
-          <button className="action-button" onClick={() => setShowModal(true)}>Editeaza</button>
-          <button className="action-button" onClick={() => setShowResetPasswordModal(true)}>Reseteaza parola</button>
+      )}
+
+      {/* Position */}
+      <div className="profile-meta flex items-center gap-2 text-sm text-gray-200">
+        <p className="font-semibold">{t("profile.position")}:</p>
+        <div className={` py-1 table-player-position p-${user.player.position} text-white  font-semibold `}>
+          {user.player.position}
         </div>
       </div>
+    </div>
+  </div>
+
+  {/* Actions */}
+  {isOwnProfile && (
+    <div className="profile-actions flex gap-3 mt-4 md:mt-0">
+      <button
+        className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 
+                   text-white font-semibold shadow transition"
+        onClick={() => setShowModal(true)}
+      >
+        {t("profile.edit")}
+      </button>
+      <button
+        className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 
+                   text-white font-semibold shadow transition"
+        onClick={() => setShowResetPasswordModal(true)}
+      >
+        {t("profile.reset")}
+      </button>
+    </div>
+  )}
+</div>
+
       {/* Bootstrap Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Profile</Modal.Title>
+          <Modal.Title>{t("profile.editprofile")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            <label>Username:</label>
+            <label>{t("profile.username")}:</label>
             <input
               type="text"
               name="username"
@@ -281,7 +316,7 @@ const Profile = () => {
             />
           </div>
           <div>
-            <label>Email:</label>
+            <label>{t("profile.email")}:</label>
             <input
               type="email"
               name="email"
@@ -292,14 +327,14 @@ const Profile = () => {
             />
           </div>
           <div>
-            <label>Favorite Team:</label>
+            <label>{t("profile.favoriteTeam")}:</label>
             <select
               name="favTeam"
               value=""
               onChange={handleChange}
               className="form-control"
             >
-              {user.favTeam? <option value="0">{user.favTeam.name}</option>: <option value="0">Select your favorite team</option>}
+              {user.favTeam? <option value="0">{user.favTeam.name}</option>: <option value="0">{t("profile.select")}</option>}
              
               {teams.map((team) => (
                 <option key={team._id} value={team._id}>
@@ -309,7 +344,7 @@ const Profile = () => {
             </select>
           </div>
           <div>
-            <label>Profile Picture:</label>
+            <label>{t("profile.picture")}:</label>
             <input
               type="file"
               name="profilePicture"
@@ -320,10 +355,10 @@ const Profile = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
+            {t("profile.cancel")}
           </Button>
-          <Button variant="primary" onClick={handleSaveChanges}>
-            Save Changes
+          <Button variant="success" onClick={handleSaveChanges}>
+            {t("profile.save")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -334,7 +369,7 @@ const Profile = () => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <label>Old Password:</label>
+            <label>{t("profile.old")}:</label>
             <input
               type="password"
               name="oldPassword"
@@ -345,7 +380,7 @@ const Profile = () => {
             />
           </div>
           <div>
-            <label>New Password:</label>
+            <label>{t("profile.new")}:</label>
             <input
               type="password"
               name="newPassword"
@@ -356,7 +391,7 @@ const Profile = () => {
             />
           </div>
           <div>
-            <label>Confirm New Password:</label>
+            <label>{t("profile.confirm")}:</label>
             <input
               type="password"
               name="confirmNewPassword"
@@ -369,59 +404,75 @@ const Profile = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowResetPasswordModal(false)}>
-            Cancel
+            {t("profile.cancel")}
           </Button>
           <Button variant="primary" onClick={handleResetPassword}>
-            Reset Password
+            {t("profile.reset")}
           </Button>
         </Modal.Footer>
       </Modal>
     </div>
     
-    <div className='bets_history'>
-      Istoric predictii
-    </div>
-    <div className='match-container match-container-header'>
-      
-          <div>STATUS</div>
-          <div className='responsive_trash'></div>
-          <div>ACASA</div>
-          <div>SCOR</div>
-          <div>DEPLASARE</div>
-          <div className='responsive_trash'></div> 
-          <div>BET</div>
-          <div>OPTION</div>
-          <div>POTENTIAL</div>
+   
+    <div className="trophy-cabinet-container">
+      {/* Trophies Section */}
+      <div className="trophies-section">
+        <h3>{t("profile.trophies")}</h3>
+        <div className="trophies">
+              
+            <div className='trophy-section'>
+                <div className="trophy trophy-international-cup"></div>
+                <div className='trophy-name'>Cupa Campionilor</div>
+            </div>
+            <div className='trophy-section'>
+                <div className="trophy trophy-ultra-cup"></div>
+                <div className='trophy-name'>Ultras League</div>
+            </div>
+            <div className="relative">
+              {/* Badge trofee */}
+              <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-[#c31432] text-white font-bold px-2 py-1 rounded-full shadow-lg shadow-slate-500 text-xl">
+                x3
+              </div>
+
+              {/* Card content */}
+              <div className="trophy-section text-center h-[260px]">
+                <div className="trophy trophy-campionat"></div>
+                <div className="trophy-name mt-2">Campionat</div>
+              </div>
+            </div>
+            <div className='trophy-section'>
+                <div className="trophy trophy-national-cup"></div>
+                <div className='trophy-name'>Cupa Nationala</div>
+            </div>
+            <div className='trophy-section'>
+                <div className="trophy trophy-international-supercup"></div>
+                <div className='trophy-name'>Supercupa Internationala</div>
+            </div>
+            <div className='trophy-section'>
+                <div className="trophy trophy-national-supercup"></div>
+                <div className='trophy-name'>Supercupa Nationala</div>
+            </div>
+            <div className='trophy-section'>
+                <img src={MvpIcon} alt="MVP" className='mvp-icon' title="MVP" />
+                <div className='trophy-name'>MVP</div>
+            </div>
         </div>
-        {bets.length>0 && bets.map((bet, index) =>(
-          <div className='match-container'>
-            <div className='responsive_trash'></div>
-            <div>{bet.matchId.status==='in_progress'? <Badge bg='success'>LIVE</Badge>: (bet.matchId.status==='finished'?  <Badge bg='danger'>Finished</Badge>: <Badge bg='warning'>Upcoming</Badge>)}</div>
-            <div className='responsive_trash'></div>
-            <div className='team-match-div'>
-              <div> <img src={process.env.REACT_APP_LOGO +`/${bet.matchId.hometeam.imageUrl}`} alt='logo' className='team_logo_modal'/></div> 
-              <div className='hometeam_modal'>{bet.matchId.hometeam.name}  </div> 
-            </div>
-            <div className='score-div'>
-              <div className='score_bet_final'>
-                <div className='score_home'>{bet.game.homeScore}</div>
-                <div className='score_delim'>-</div>
-                <div className='score_away'>{bet.game.awayScore}</div>
-              </div> 
-            </div>
-            <div className='team-match-div'>
-              <div > <img src={process.env.REACT_APP_LOGO +`/${bet.matchId.awayteam.imageUrl}`} alt='logo' className='team_logo_modal'/></div> 
-              <div className='awayteam_modal'>{bet.matchId.awayteam.name}  </div> 
-            </div>
-            <div>
-              <input disabled type='text' className='form-control'  value={bet.betCash+'💵'}  />  
-            </div>
-            <div className='bet_option'>{bet.betOption}</div>
-            <div>{bet.winCash} 💵</div>
-          </div>
-        ))}
+        <div className='player-bio-stats'>
+           
+          <PlayerStatsCard player={{
+  name: "Cristiano Ronaldo",
+  position: "ST",
+  matches: 850,
+  level: 99,
+  goals: 780,
+  influence: 200,
+  wonBets: 120
+}} />
+        </div>
+      </div>
+      </div>
     </div>
-    )}</>
+    </>
   );
 };
 

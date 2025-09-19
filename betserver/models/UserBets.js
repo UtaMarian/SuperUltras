@@ -7,12 +7,12 @@ const Schema = mongoose.Schema;
 const UserBetSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'UserBet', // Reference to User model
+    ref: 'User', // Reference to User model
     required: true
   },
   matchId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Bet', // Reference to Match model
+    ref: 'Match', // Reference to Match model
     required: true
   },
   betOption: {
@@ -22,7 +22,8 @@ const UserBetSchema = new Schema({
   },
   betCash: {
     type: Number, // The amount of cash the user bet
-    required: true
+    required: true,
+    default:10
   },
   winCash: {
     type: Number, // The potential winning amount

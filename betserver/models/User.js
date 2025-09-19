@@ -3,54 +3,20 @@ const bcrypt = require('bcryptjs');
 
 // Define the User schema
 const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  cash: {
-    type: Number,
-    default: 1000
-  },
-  coins: {
-    type: Number,
-    default: 0
-  },
-  favTeam: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Team'
-  },
-  role: {
-    type: String,
-    enum: ['admin', 'moderator', 'user'],
-    default: 'user'
-  },
-  dailyCashCollect: {
-    type: Number,
-    default: 0
-  },
-  profilePicture: {
-    type: String, 
-  },
-  rank: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Rank'
-  },
+  username: {type: String,required: true, unique: true},
+  email: {type: String,required: true,unique: true},
+  password: {type: String, required: true},
+  createdAt: {type: Date, default: Date.now},
+  cash: {type: Number,default: 1000},
+  coins: {type: Number,default: 0},
+  favTeam: {type: mongoose.Schema.Types.ObjectId,ref: 'Team'},
+  role: {type: String,enum: ['admin', 'moderator', 'user'],default: 'user'},
+  dailyCashCollect: { type: Number, default: 0},
+  profilePicture: { type: String},
+  rank: {type: mongoose.Schema.Types.ObjectId,ref: 'Rank'},
   lastLogin: Date,
   lastCashCollectionDate: Date,
+  player: {type: mongoose.Schema.Types.ObjectId,ref: 'Player'},
 });
 
 // Pre-save hook to format cash to two decimal places
@@ -75,4 +41,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('UserBet', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

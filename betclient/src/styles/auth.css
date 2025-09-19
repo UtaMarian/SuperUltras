@@ -28,7 +28,7 @@
 }
 
 .index-auth{
-    background-image: url('../assets//covers/login.jpg');
+    background-image: url('../assets//covers/game_bg.png');
     position: relative;
     background-size: cover;     /* Ensures the image covers the entire area */
  /* Centers the image */

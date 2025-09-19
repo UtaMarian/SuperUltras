@@ -1,0 +1,227 @@
+.App-coregrafie {
+    text-align: center;
+    background-color: #202020;
+    border-radius: 10px;
+    max-width: 1200px;
+    margin: 0px auto;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  .buy-button {
+    margin: 20px;
+    color:white;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .cell {
+    border: 1px solid #ccc;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  
+  .cell-button {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    padding: 40px;
+    max-width: 1000px;
+    position: relative;
+    height: 300px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 2px;
+    margin-top:2px;
+  }
+  
+  .history {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 52px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgba(221, 221, 221, 0.1);
+    border-radius: 5px;
+    max-width: 500px;
+
+  }
+  
+  .letter,.color{
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 28px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  .money-icon{
+    width: 20px;
+    margin-left: 5px;
+  }
+
+  .img-grid{
+    width: 50px;
+  }
+  .icon{
+    width: 50px;
+  }
+  .money-btn{
+    margin-top: 5px;
+  }
+  .white-text{
+    color:white;
+  }
+  .horizontal-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    color:white;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-bottom: 5px;
+  }
+.a-letter{
+    background-color: #fff;
+}
+.clear-history{
+    max-width: 120px;
+    margin-left: 20px;
+}
+.buy-button{
+    max-width: 13+0px;
+}
+
+.match-stats-coregraphy{
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-gap: 10px;
+}
+
+.match-stats-coregraphy {
+    display: grid !important;
+    grid-template-columns: 1.5fr 0.5fr 1.5fr !important;
+
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: space-between;
+      align-content: center;
+      width: 100%;
+    padding: 10px;
+    padding-left: 50px;
+}
+
+.div-coregraphy {
+    background-color: #202020;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    min-height: 200px;
+    max-width: 780px;
+    width: 780px;
+}
+
+.div-coregrafie{
+
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.div-coregraphy h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.coregraphy-item {
+  
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.coregraphy-user {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.coregraphy-user img {
+    height: 40px;
+    border: #ccc solid 1px;
+}
+
+.coregraphy-history {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+   
+}
+
+.coregraphy-history img {
+    width: 75px;
+    height: 75px;
+    background-color: #fff;
+    margin: 0;
+    padding: 0; 
+}
+.coregraphy-history .letter{
+    width: 75px;
+    height: 75px;
+    background-color: #fff;
+    margin: 0;
+    padding: 0; 
+}
+.coregraphy-history .color{
+   width: 75px;
+    height: 75px;
+    background-color: #fff;
+    margin: 0;
+    padding: 0; 
+}
+
+.coregraphy-money {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: bold;
+}

@@ -86,6 +86,7 @@ router.put('/:id', uploadMiddleware.single('file'), async (req, res) => {
 // DELETE a rank
 router.delete('/:id', async (req, res) => {
   try {
+    
     const rank = await Rank.findById(req.params.id);
     if (!rank) {
       return res.status(404).json({ message: 'Rank not found' });
@@ -94,10 +95,12 @@ router.delete('/:id', async (req, res) => {
     // Remove rank icon file if exists
     if (rank.icon) {
       const filePath = rank.icon.replace(`${process.env.REACT_APP_API}/`, '');
+      console.log(filePath);
       fs.unlinkSync(filePath);
     }
-
-    await rank.remove();
+console.log(rank);
+    const status=await Rank.deleteOne({_id:req.params.id});
+    console.log(status);
     res.json({ message: 'Rank deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });

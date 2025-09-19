@@ -1,0 +1,54 @@
+{
+  "welcome": "Bine ai venit",
+  "training_center": "Centrul de Antrenament",
+  "level": "Nivel",
+  "training_points": "Puncte de Antrenament",
+  "post_placeholder":"Scrie ceva",
+  "post_button":"Posteaza",
+  "events":"Evenimente",
+  "top5players":"Top 5 jucatori",
+  "nextmatches":"Urmatoarele meciuri",
+  "player":"Jucator",
+  "cash":"Bani",
+  "bets":"Pariuri",
+  "home":"Acasa",
+  "away":"Deplasare",
+  "date":"Data",
+  "navbar": {
+    "home": "Acasă",
+    "bets": "Predicții",
+    "match": "Meci",
+    "leagues": "Clasament",
+    "club": "Club",
+    "training": "Training",
+    "profile": "Profil",
+    "admin": "Admin",
+    "moderator": "Moderator",
+    "logout": "Logout"
+  },
+  "bettings":{
+    "today":"Azi",
+    "tomorow":"Maine",
+    "yesterday":"Ieri",
+    "nogames":"Nu sunt meciuri disponibile"
+  },
+  "training": {
+    "loading": "Se încarcă...",
+    "noPlayer": "Niciun jucător găsit",
+    "position": "Poziție",
+    "level": "Nivel",
+    "trainingPoints": "Puncte de antrenament",
+    "recommended": "Antrenamente recomandate pentru {{position}}:",
+    "train": "Antrenează {{attribute}}",
+    "maxAttributeWarning": "Atributul a atins valoarea maximă"
+  },
+  "attributes": {
+    "pace": "Viteză",
+    "shooting": "Șut",
+    "passing": "Pase",
+    "dribbling": "Dribling",
+    "defending": "Apărare",
+    "physicality": "Forță fizică"
+  }
+
+}

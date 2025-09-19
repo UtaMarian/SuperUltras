@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ThreadSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'UserBet', required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   text: { type: String, required: true },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   likes: { type: Number, default: 0 },
