@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
   margin: 0;
   padding: 0;
@@ -6,4 +9,40 @@ body {
 *{
   font-family: "Roboto Slab", serif;
 }
-
+.p-GK{
+    background-color: rgb(0, 162, 255) ;
+}
+.p-CM,.p-CM1,.p-CM2,.p-LM,.p-RM{
+    background-color: rgb(211, 144, 0) ;
+}
+.p-LB,.p-RB,.p-CB1,.p-CB2,.p-CB{
+    background-color: rgb(0, 172, 29) ;
+}
+.p-ST,.p-ST1,.p-ST2,.p-LW,.p-RW{
+    background-color: rgb(255, 49, 49) ;
+}
+.table-player-position{
+    border-radius: 5px;
+    width: 40px;
+    color: white ;
+    text-align: center;
+    height: 25px !important;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.table-player-level{
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, #FFD700 50%, #DAA520 90%);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 
+                inset 0 4px 4px rgba(255, 255, 255, 0.5), 
+                inset 0 -4px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #fff;
+}

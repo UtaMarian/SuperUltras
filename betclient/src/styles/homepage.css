@@ -1,10 +1,9 @@
 .index-home-container{
-    background-image: url('../assets//covers/login.jpg');
+    background-image: url('../assets//covers/game_bg.png');
     position: relative;
-    background-size: cover;     /* Ensures the image covers the entire area */
-    /* Centers the image */
-    background-repeat: no-repeat; 
-    height: 1000px;
+     background-size: auto;       /* don’t stretch */
+  background-position: top left;
+    min-height: 1000px;
     padding: 20px;
     display: flex;
 }
@@ -109,11 +108,12 @@
   .events-container, .league-container, .matches-container {
     margin-bottom: 20px;
     padding: 15px;
-    border: 1px solid #ccc;
+    
     border-radius: 4px;
     text-align: center;
   }
   
+ 
   h3 {
     margin-bottom: 10px;
     background: #c31432;  
@@ -153,11 +153,12 @@
   align-items: center;
   justify-content: space-between;
   max-width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid #a0a0a0;
   margin-bottom: 10px;
   background-color: rgb(39, 46, 53);
   color:white
 }
+
 
 .event-image {
   flex: 1;
@@ -190,6 +191,11 @@
   transition: 300ms ease-in;
   
 }
+.next_matches_table td{
+  background-color: transparent !important;
+  color: black !important;
+}
+
 /* Responsive Layout: Mobile */
 @media (max-width: 768px) {
   .index-home-container {

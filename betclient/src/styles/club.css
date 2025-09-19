@@ -1,5 +1,18 @@
 /* SoccerFormation.css */
+.profile-header .club-team-picture{
+    width: 100px;
+    
 
+    margin-right: 10px;
+}
+
+.profile-header .profile-info .profile-username{
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  
+}
 .club-navbar{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -113,7 +126,7 @@
     font-size: 16px;
     font-weight: bold;
     color:#594D2C;
-    background-image: url('../assets/covers/icon_player.png'); 
+    background-color: transparent;
     background-size: cover; /* Ensure the image covers the entire element */
     background-repeat: no-repeat; /* Prevent image repetition */
     width: 100%;
@@ -124,7 +137,7 @@
 
 .field-player-overlay{
     position: relative;
-    top: 60%;
+    top: 20%;
     text-align: center;
 }
 .field-position-overlay{
@@ -150,15 +163,17 @@
 /**?/////////////////////////
 /* Field Styling */
 .field {
-    width: 50%; /* Take up 50% of the screen width */
+    width: 42%; /* Take up 50% of the screen width */
     background-image: url('../assets/covers/field2.jpg'); /* Replace with soccer field background */
     background-position: 0px bottom;
     background-size: cover;
-    padding: 20px;
+    
     border-radius: 12px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
     color: black;
     position: relative; /* Required for absolute positioning of child elements */
+    margin-right: 10px;
+    max-height: 800px;
   }
   
   /* General Field Position Styling */
@@ -222,15 +237,7 @@
 
   }
 
-.table-player-position{
-    border-radius: 5px;
-    width: 40px;
-    color: white ;
-    text-align: center;
-    height: 25px !important;
-    padding-left: 5px;
-    padding-right: 5px;
-}
+
 .table-player-picture{
     width: 25px !important;
 }
@@ -272,18 +279,7 @@
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
-.p-GK{
-    background-color: rgb(0, 162, 255) ;
-}
-.p-CM,.p-CM1,.p-CM2,.p-LM,.p-RM{
-    background-color: rgb(211, 144, 0) ;
-}
-.p-LB,.p-RB,.p-CB1,.p-CB2,.p-CB{
-    background-color: rgb(0, 172, 29) ;
-}
-.p-ST,.p-ST1,.p-ST2,.p-LW,.p-RW{
-    background-color: rgb(255, 49, 49) ;
-}
+
 
 /*TRANSFER*/
 .filters{
@@ -304,16 +300,20 @@
   .trophy-cabinet-container {
     padding: 20px;
     font-family: Arial, sans-serif;
+    
   }
   
   .trophies-section {
 
     margin-bottom: 20px;
+ 
   }
   
   .trophies {
     display: flex;
     justify-content: space-around;
+    gap:15px;
+    flex-wrap: wrap;
   }
   
   .trophy {
@@ -326,27 +326,35 @@
   }
   
   /* Trophies - Adjust background position for each trophy */
-  .trophy-league {
+  .trophy-champions-cup {
     background-position: 0 0;  /* Adjust these based on the trophy's position in the sprite image */
   }
   
-  .trophy-national-cup {
+  .trophy-international-supercup {
     width: 102px;
     height: 130px;
     background-position: 0px -140px;  /* Adjust background position */
   }
   
-  .trophy-champions-cup {
+  .trophy-campionat {
     background-position: -197px 0;
   }
   
-  .trophy-international-cup {
+  .trophy-champions-cup {
     width: 58px;
     height: 140px;
     background-position: -383px 0;
   }
+
+    .trophy-ultras-cup {
+    background-image: url("../assets/ultrascup2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 110px;
+    background-position: 0 -15px;
+     }
   
-  .trophy-elite-cup {
+  .trophy-national-supercup {
     /* width: 100px;
     height: 140px;
     background-position: 0 -130px ; */
@@ -405,4 +413,59 @@
     justify-content:space-between;
     gap: 20px;
     width: 100%;
+}
+
+.player-shirt {
+  width: 40px;
+  height: 50px;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 4px 4px 10px 10px; /* bottom rounded */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* sleeves */
+.player-shirt::before,
+.player-shirt::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 20px;
+  background-color: inherit; /* same color as main shirt */
+  border-radius: 4px;
+}
+
+.player-shirt::before {
+  left: -12px; /* left sleeve */
+}
+
+.player-shirt::after {
+  right: -12px; /* right sleeve */
+}
+
+.tactical-panel {
+
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 10;  /* deasupra terenului */
+}
+.tactical-panel h4 {
+  margin-top: 0;
+}
+
+.tactical-panel label {
+  display: block;
+  margin-top: 10px;
+}
+
+.tactical-panel select {
+  width: 100%;
+  padding: 5px;
+  margin-top: 3px;
+  margin-bottom: 10px;
 }

@@ -10,34 +10,78 @@ function TeamComponent() {
     const [fromLeague, setFromLeague] = useState('');
     const [fromCountry, setFromCountry] = useState('');
     const [refresh, setRefresh] = useState(false); 
+    const [players, setPlayers] = useState({});
+    const [selectedManagers, setSelectedManagers] = useState({});
+    const token = localStorage.getItem('token');
+   useEffect(() => {
+  async function fetchData() {
+    try {
+      // fetch leagues
+      const resLeagues = await fetch(process.env.REACT_APP_API + '/leagues', { credentials: 'include' ,  headers: { 'x-auth-token': token }});
+      if(resLeagues.ok) {
+        const dataLeagues = await resLeagues.json();
+        setLeagues(dataLeagues);
+      }
 
-    useEffect(() => {
-        // Fetch countries
-        fetch(`${process.env.REACT_APP_API}/countries`, {
-          credentials: 'include'
-        })
-          .then(res => res.json())
-          .then(data => setCountries(data))
-          .catch(err => console.error('Failed to fetch countries', err));
-    
-        // Fetch leagues
-        fetch(`${process.env.REACT_APP_API}/leagues`, {
-          credentials: 'include'
-        })
-          .then(res => res.json())
-          .then(data => setLeagues(data))
-          .catch(err => console.error('Failed to fetch leagues', err));
-        fetch(process.env.REACT_APP_API+'/teams',{
-                credentials:'include'
-            }).then(res=>{
-                res.json().then(_teams=>{
-                    setTeams(_teams);
-                })
-            }).catch(err=>{
-                showNotification("danger","Failed","Eroare de la server");
-            })
-        }, [refresh]);
+      // fetch countries
+      const resCountries = await fetch(process.env.REACT_APP_API + '/countries', { credentials: 'include' });
+      if(resCountries.ok) {
+        const dataCountries = await resCountries.json();
+        setCountries(dataCountries);
+      }
 
+      // fetch teams & their players (existing code)
+      const resTeams = await fetch(process.env.REACT_APP_API + '/teams', { credentials: 'include' });
+      if(resTeams.ok) {
+        const dataTeams = await resTeams.json();
+        setTeams(dataTeams);
+
+        // fetch players for each team
+        const token = localStorage.getItem('token');
+        let playersByTeam = {};
+        for (let team of dataTeams) {
+          const resPlayers = await fetch(`${process.env.REACT_APP_API}/players/by-team/${team._id}`, {
+            credentials: 'include',
+            headers: { "x-auth-token": token }
+          });
+          const dataPlayers = await resPlayers.json();
+          playersByTeam[team._id] = dataPlayers;
+        }
+        setPlayers(playersByTeam);
+      }
+
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  fetchData();
+}, [refresh]);
+
+
+        // schimbă managerul
+    async function setManager(teamId) {
+        const managerId = selectedManagers[teamId];
+        if (!managerId) {
+            showNotification("info", "INFO", "Selectează un manager");
+            return;
+        }
+
+        const res = await fetch(`${process.env.REACT_APP_API}/teams/${teamId}/manager`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ managerId }),
+        });
+
+        if (res.ok) {
+            showNotification("success", "Success", "Manager actualizat");
+            setRefresh(prev => !prev);
+        } else {
+            const errData = await res.json();
+            showNotification("danger", "Error", errData.message || "Eroare la schimbarea managerului");
+        }
+        }
       async function addNewCountry(ev) {
         ev.preventDefault();
         if(!(fromLeague && fromCountry && name)){
@@ -134,21 +178,51 @@ function TeamComponent() {
         <table className="table  table-hover admin-table-responsive">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nume echipa</th>
-                    <th scope="col">Liga</th>
-                    <th scope="col">Tara</th>
-                    <th scope='col'>Sterge</th>
+                    <th>#</th>
+                    <th>Nume echipa</th>
+                    <th>Liga</th>
+                    <th>Tara</th>
+                    <th>Manager</th>
+                    <th>Sterge</th>
                 </tr>
             </thead>
             <tbody>
-            {teams.length>0 && teams.map((team,index) =>(
+            {teams.map((team, index) => (
                 <tr key={team._id}>
-                    <th scope="row">{index+1}</th>
-                    <td>{team.name}</td>
-                    <td>{team.fromLeague.name}</td>
-                    <td>{team.fromCountry.name}</td>
-                    <td><button className='btn btn-outline-danger' onClick={() => deleteTeam(team._id,true)}>X</button></td>
+                <td>{index + 1}</td>
+                <td>{team.name}</td>
+                <td>{team.fromLeague?.name}</td>
+                <td>{team.fromCountry?.name}</td>
+                <td>
+                    <select
+                    value={selectedManagers[team._id] || ""}
+                    onChange={e =>
+                        setSelectedManagers(prev => ({ ...prev, [team._id]: e.target.value }))
+                    }
+                    >
+                    <option value="">Selectează manager</option>
+                    {Array.isArray(players[team._id]) &&
+                        players[team._id].map(player => (
+                            <option key={player._id} value={player._id}>
+                            {player.name} ({player.position})
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                    className="btn btn-sm btn-primary ms-2"
+                    onClick={() => setManager(team._id)}
+                    >
+                    Salvează
+                    </button>
+                </td>
+                <td>
+                    <button
+                    className="btn btn-outline-danger"
+                    onClick={() => deleteTeam(team._id)}
+                    >
+                    X
+                    </button>
+                </td>
                 </tr>
             ))}
             </tbody>

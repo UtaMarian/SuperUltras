@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import '../../styles/club.css';
 import BallIcon from '../../assets/icons/soccer-ball.png';
-
+import DefaultProfilePicture from '../../assets/icons/man.png';
+import Jersey from '../../components/Jersey';
+import AuthContext from '../../AuthContext';
+import { useTranslation } from "react-i18next";
 const ItemTypes = {
   PLAYER: 'player',
 };
@@ -27,6 +30,12 @@ const isValidPosition = (playerPosition, fieldPosition) => {
     return positionMap[playerPosition]?.includes(fieldPosition);
   };
 
+    // Tactical options
+  const gameTypes = ["Park the Bus", "Defensiv", "Neutru", "Ofensiv", "All on Attack"];
+  const tacticsInField = ["Pe flancuri", "Mingi lungi", "Joc de pase", "Contraatac"];
+  const offsideOptions = ["On", "Off"];
+  const markingOptions = ["Om la om", "Zonal"];
+
 // Player component (Draggable)
 const Player = ({ player, index }) => {
   const [{ isDragging }, drag] = useDrag({
@@ -46,8 +55,10 @@ const Player = ({ player, index }) => {
     >
       <td>{index+1}</td>
       <td><div className={`table-player-position p-${player.position}`}>{player.position}</div></td>
-      <td ><img src={process.env.REACT_APP_LOGO + `/${player.icon}`} alt='logo' className="table-player-picture" title={player.icon} /></td>
-      <td className="table-player-name">{player.name}</td>
+      {/*<td ><img src={process.env.REACT_APP_LOGO + `/${player.icon}`} alt='logo' className="table-player-picture" title={player.icon} /></td>*/}
+      <td><img src={DefaultProfilePicture} alt='logo' className="table-player-picture" title={player.icon}/></td>
+      <td className="table-player-name">
+        {/* <a href={`/profile/${player._id}`}>{player.name}</a></td> */}{player.name}</td>
       <td >
         <div className="table-player-level">
             <div class="medal-content">{player.level}</div>
@@ -88,10 +99,15 @@ const Position = ({ position, player, onDrop }) => {
       >
         {player ? (
           <div className='player-field'>
-            <div className='field-player-overlay'>{player.name}</div>
-            <div className='field-player-level-overlay'>{player.level}</div>
-            <img className='field-player-icon' src={process.env.REACT_APP_LOGO + `/${player.icon}`} alt='logo'/>
-          </div>
+            {/* <div className='field-player-overlay'>{player.name}</div> */}
+            {/* <div className='field-player-level-overlay'>{player.level}</div> */}
+            {/* <img className='field-player-icon' src={process.env.REACT_APP_LOGO + `/${player.icon}`} alt='logo'/>
+          </div> */}
+         
+            <Jersey name={player.name} number={player.level}/>
+          
+          
+        </div>
         ) : (
           <div className={`empty-field ${position}`}><div className='field-position-overlay'>{position}</div></div>
         )}
@@ -102,70 +118,136 @@ const Position = ({ position, player, onDrop }) => {
 // Formation configurations
 const formations = {
   '4-3-3': ['GK', 'LB', 'CB1', 'CB2', 'RB', 'LM', 'CM', 'RM', 'LW', 'ST', 'RW'],
-  '4-4-2': ['GK', 'LB', 'CB1', 'CB2', 'RB', 'LM', 'CM1','CM2', 'RM', 'ST1', 'ST2'],
-  '4-2-4': ['GK', 'LB', 'CB1', 'CB2', 'RB', 'CM1', 'CM2', 'LW', 'ST1', 'ST2','RW'],
-  '3-4-3': ['GK', 'LB', 'CB',  'RB', 'LM', 'CM1','CM2', 'RM', 'LW', 'ST', 'RW'],
-  '3-3-4': ['GK', 'LB', 'CB',  'RB', 'LM', 'CM', 'RM', 'LW', 'ST1', 'ST2', 'RW'],
+  // '4-4-2': ['GK', 'LB', 'CB1', 'CB2', 'RB', 'LM', 'CM1','CM2', 'RM', 'ST1', 'ST2'],
+  // '4-2-4': ['GK', 'LB', 'CB1', 'CB2', 'RB', 'CM1', 'CM2', 'LW', 'ST1', 'ST2','RW'],
+  // '3-4-3': ['GK', 'LB', 'CB',  'RB', 'LM', 'CM1','CM2', 'RM', 'LW', 'ST', 'RW'],
+  // '3-3-4': ['GK', 'LB', 'CB',  'RB', 'LM', 'CM', 'RM', 'LW', 'ST1', 'ST2', 'RW'],
 };
 
 // Main component
-const SoccerFormation = () => {
-    const [players, setPlayers] = useState([
-      { id: 1, name: 'Leo Messi', goals: 5, level: 10, influence: '1.5M', position: 'GK', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg",},
-      { id: 2, name: 'Ronaldo', goals: 8, level: 9, influence: '2.1M', position: 'LB', icon: "userspicture/e084569f98401c234b8e92a8f609aca8.png" },
-      { id: 3, name: 'Mbbappe', goals: 62, level: 8, influence: '1.8M', position: 'ST', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 4, name: 'Neymar', goals: 3, level: 7, influence: '900K', position: 'RM', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 5, name: 'Vinicius', goals: 5, level: 10, influence: '1.5M', position: 'LM', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 6, name: 'Haaland', goals: 8, level: 9, influence: '2.1M', position: 'CB', icon: "userspicture/d7e8f4543bd9ad63a9343b57dcee9ad9.jpg" },
-      { id: 7, name: 'Dragusin', goals: 6, level: 8, influence: '1.8M', position: 'LB', icon: "userspicture/e6e053e18cb7a557016fc7511bf41ddf.jpg" },
-      { id: 8, name: 'Hagi', goals: 3, level: 7, influence: '900K', position: 'CB', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 9, name: 'Henry', goals: 5, level: 10, influence: '1.5M', position: 'ST', icon: "userspicture/f00de1ff69cb222ec6dda2c66c8f20ca.png" },
-      { id: 10, name: 'Ronaldinho', goals: 8, level: 9, influence: '2.1M', position: 'LW', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 11, name: 'Sergio Ramos', goals: 6, level: 8, influence: '1.8M', position: 'CM', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 12, name: 'De Light', goals: 3, level: 7, influence: '900K', position: 'CB', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 13, name: 'Maguire', goals: 5, level: 10, influence: '1.5M', position: 'CB', icon: "userspicture/e084569f98401c234b8e92a8f609aca8.png" },
-      { id: 14, name: 'Carvajal', goals: 8, level: 9, influence: '2.1M', position: 'RB', icon: "userspicture/99f6a7b6a71f00375c2f7930b0d23a1d.jpg" },
-      { id: 15, name: 'Pedri', goals: 6, level: 8, influence: '1.8M', position: 'CM', icon: "userspicture/863e7bea86159c870c8d79b4f7db7b71.png" },
-      
-    ]);
-  
+const SoccerFormation = ({club}) => {
+   const { t } = useTranslation();
+    const [players, setPlayers] = useState([]);
     const [field, setField] = useState({});
     const [formation, setFormation] = useState('4-3-3');
-  
-    const movePlayer = (fromIndex, toPosition) => {
-      const player = players[fromIndex];
-  
-      // Check if the player is already placed in any position on the field
-      const isPlayerAlreadyOnField = Object.values(field).some(
-        (fieldPlayer) => fieldPlayer && fieldPlayer.id === player.id
-      );
-  
-      if (isPlayerAlreadyOnField) {
-        alert(`Player ${player.name} is already on the field!`);
-        return;
-      }
-  
-      // Check if the player can be moved to the selected position
-      if (isValidPosition(player.position, toPosition)) {
-        setField({ ...field, [toPosition]: player });
+    const clubid =club._id;
+    const { user } = useContext(AuthContext);
+
+    
+   useEffect(() => {
+  const token = localStorage.getItem('token');
+
+  const fetchPlayersAndFormation = async () => {
+    try {
+      let playersRes;
+
+   
+      if (!clubid) {
+        // 🔹 Dacă clubid e null -> echipa userului
+        playersRes = await fetch(`${process.env.REACT_APP_API}/club/my-team`, {
+          method: "GET",
+          credentials: "include",
+          headers: { "x-auth-token": token }
+        });
       } else {
-        alert(`Player ${player.name} cannot play in ${toPosition}`);
+        // 🔹 Dacă există clubid -> echipa altui club
+        playersRes = await fetch(`${process.env.REACT_APP_API}/club/${clubid}/players`, {
+          method: "GET",
+          credentials: "include",
+          headers: { "x-auth-token": token }
+        });
       }
-    };
+
+      if (!playersRes.ok) return console.error("Error fetching players");
+      const playersData = await playersRes.json();
+      setPlayers(playersData);
+
+      if (!playersData.length) return;
+
+      // 2. Fetch saved formation
+      const teamId = clubid || playersData[0].team; 
+      const formationRes = await fetch(`${process.env.REACT_APP_API}/club/${teamId}/formation`, {
+        method: "GET",
+        credentials: "include",
+        headers: { "x-auth-token": token }
+      });
+
+      if (!formationRes.ok) return console.error("Error fetching formation");
+      const savedFormation = await formationRes.json();
+
+      // 3. Map saved player IDs to actual player objects
+      const fieldPositions = {};
+      for (const [pos, playerId] of Object.entries(savedFormation)) {
+        const playerObj = playersData.find(p => p._id === playerId);
+        if (playerObj) fieldPositions[pos] = playerObj;
+      }
+
+      setField(fieldPositions);
+
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  };
+
+  fetchPlayersAndFormation();
+}, [clubid]);
+
+
+   const movePlayer = (fromIndex, toPosition) => {
+  const player = players[fromIndex];
+
+  // Creează o copie a terenului
+  const updatedField = { ...field };
+
+  // Elimină jucătorul dacă există deja în altă poziție
+  for (const pos in updatedField) {
+    if (updatedField[pos]?._id === player._id) {
+      updatedField[pos] = null;
+    }
+  }
+
+  // Verifică dacă jucătorul poate fi pus pe poziția aleasă
+  if (!isValidPosition(player.position, toPosition)) {
+    alert(`Player ${player.name} cannot play in ${toPosition}`);
+    return;
+  }
+
+  // Plasează jucătorul pe poziția dorită
+  updatedField[toPosition] = player;
+  setField(updatedField);
+};
+
   
     const handleFormationChange = (e) => {
       setFormation(e.target.value);
       setField({});
     };
   
-    const handleSaveTeam = () => {
-      const team = Object.values(field).filter(player => player); // Get all players on the field
-      if (team.length === 11) {
-        console.log("Saved Team:", team);
-      } else {
-        alert(`Incomplete team! Only ${team.length} players on the field.`);
-      }
-    };
+  const handleSaveTeam = async () => {
+  const teamFormation = {};
+  Object.entries(field).forEach(([pos, player]) => {
+    if (player) teamFormation[pos] = player._id;
+  });
+
+  if (Object.keys(teamFormation).length === 11) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(process.env.REACT_APP_API + `/club/${players[0].team}/formation`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token
+      },
+      body: JSON.stringify({ formation: teamFormation })
+    });
+
+    if (res.ok) alert("Team formation saved!");
+    else alert("Error saving formation");
+  } else {
+    alert(`Incomplete team! Only ${Object.keys(teamFormation).length} players on the field.`);
+  }
+};
+
   
     return (
       <DndProvider backend={HTML5Backend}>
@@ -174,19 +256,19 @@ const SoccerFormation = () => {
             <table className="table table-hover table-striped">
               <thead>
                 <tr>
-                  <th>No</th>
-                  <th>Pos.</th>
-                  <th>Img</th>
-                  <th>Player</th>
-                  <th>Level</th>
-                  <th>Goals</th>
-                  <th>Matches</th>
+                  <th>{t("club.nr")}</th>
+                  <th>{t("club.pos")}.</th>
+                  <th>{t("club.img")}</th>
+                  <th>{t("club.player")}</th>
+                  <th>{t("club.level")}</th>
+                  <th>{t("club.goals")}</th>
+                  <th>{t("club.matches")}</th>
                   <th>X</th>
                 </tr>
               </thead>
               <tbody>
                 {players.map((player, index) => (
-                  <Player key={player.id} player={player} index={index} />
+                  <Player key={player._id} player={player} index={index} />
                 ))}
               </tbody>
             </table>
@@ -195,19 +277,24 @@ const SoccerFormation = () => {
           {/* Field */}
           <div className="field">
             <div className='field-actions'>
+                 
+            {club.manager&&club.manager._id===user.user.id?
+            <>
+            
                   {/* Save Team Button */}
-            <button className=" btn btn-success save-team-btn" onClick={handleSaveTeam}>
-              Save Team
-            </button>
+              <button className=" btn btn-success save-team-btn" onClick={handleSaveTeam}>
+                   {t("club.saveteam")}
+              </button>
 
-             {/* Formation Dropdown */}
-             <select className="formation-select" value={formation} onChange={handleFormationChange}>
-              {Object.keys(formations).map((form) => (
-                <option key={form} value={form}>
-                  {form}
-                </option>
-              ))}
-            </select>
+              {/* Formation Dropdown */}
+              <select className="formation-select" value={formation} onChange={handleFormationChange}>
+                {Object.keys(formations).map((form) => (
+                  <option key={form} value={form}>
+                    {form}
+                  </option>
+                ))}
+              </select>
+              </> :<></>}
             </div>
            
   
@@ -218,8 +305,8 @@ const SoccerFormation = () => {
               
             </div>
   
-          
           </div>
+          
         </div>
       </DndProvider>
     );

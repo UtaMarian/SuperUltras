@@ -8,6 +8,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const Rank= require('../models/Rank');
+const Player= require('../models/Player');
 
 // GET all users
 router.get('/', async (req, res) => {
@@ -87,7 +88,11 @@ router.get('/', async (req, res) => {
   //get user profile
   router.get('/profile', async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).populate('rank').populate('favTeam').select('-password');
+      const user = await User.findById(req.user.id).
+      populate('rank')
+      .populate('favTeam')
+      .populate("player")
+      .select('-password');
       if (!user) return res.status(404).json({ message: 'User not found' });
   
       res.json(user);
@@ -96,6 +101,22 @@ router.get('/', async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   });
+router.get('/profile/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .populate("rank")
+      .populate("favTeam")
+      .populate("player")
+      .select("-password -cash -coins -dailyCashCollect");
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
   // UPDATE user profile
 router.put('/profile', uploadMiddleware.single('file'), async (req, res) => {
@@ -135,10 +156,25 @@ router.put('/profile', uploadMiddleware.single('file'), async (req, res) => {
 
      
       if (favTeam) {
+
+        const player = await Player.findById(user.player);
+
+          const oldTeam= await Team.findById(user.favTeam);
+          oldTeam.clubOvr-=player.level;
+          await oldTeam.save();
+
           const teamExists = await Team.findById(favTeam);
-        
+         
           if (!teamExists) return res.status(400).json({ message: 'Favorite team not found' });
           user.favTeam = teamExists.id;
+       
+          
+       
+          player.team = teamExists.id;
+          
+          teamExists.clubOvr+=player.level;
+          await teamExists.save();
+          await player.save();
       }
 
  

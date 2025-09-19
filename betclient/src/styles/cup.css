@@ -1,0 +1,21 @@
+.tournament-container{
+     background-image: url('../assets/covers/login.jpg'); /* Use the correct path for your trophy image */
+  
+ position: relative;
+    background-size: cover;  
+    background-repeat: no-repeat;
+    height: 1000px;
+
+}
+ .trophy-champions-cup {
+    background-position: 0 0;  /* Adjust these based on the trophy's position in the sprite image */
+  }
+   
+  .trophy {
+    width: 97px;
+    height: 140px;
+    background-image: url('../assets/covers/trophies.png'); /* Use the correct path for your trophy image */
+    background-repeat: no-repeat;
+    background-size: 600px; /* Adjust based on the size of your entire image */
+    margin: auto;
+  }
