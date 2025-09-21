@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import "../../styles/dailyCashPopup.css";
 import { motion } from "framer-motion";
 import PollModal from "../club/PollModal.js";
+import Footer from "./Footer.js";
 
 function Homepage() {
   const [loading, setLoading] = useState(true);
@@ -176,6 +177,7 @@ function Homepage() {
   const formatter = new Intl.DateTimeFormat("en-US", options);
 
   return (
+    <>
     <div className="index-home-container">
       {loading ? (
         <div className="loader-container">
@@ -429,7 +431,10 @@ function Homepage() {
           </div>
         </>
       )}
+     
     </div>
+     <Footer />
+     </>
   );
 }
 

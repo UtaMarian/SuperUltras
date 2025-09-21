@@ -193,8 +193,9 @@ const navigate = useNavigate();
   {standings.length > 0 ? (
     standings.map((team, index) => {
       let rowClass = "";
-      if (index < 4) rowClass = "green-row";          // top 4
-      else if (index < 8) rowClass = "blue-row";      // next 4
+      if (index < 2) rowClass = "green-row";          // top 4
+      else if (index < 4) rowClass = "blue-row";   
+      else if (index < 8) rowClass = "yellow-row";  // next 2
       else if (index >= standings.length - 2) rowClass = "red-row"; // last
 
       return (
