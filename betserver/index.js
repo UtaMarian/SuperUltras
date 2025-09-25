@@ -30,7 +30,8 @@ const adminRoutes =require ('./routes/adminRoutes.js')
 const trainingRoutes=require ('./routes/trainingRoutes.js')
 const eventsRoutes=require ('./routes/eventsRoutes.js')
 const pollRoutes=require ('./routes/pollRoutes.js')
-const updateMatchStatus = require('./services/updateMatchStatus'); 
+const rewardRoutes=require ('./routes/rewardsRoutes.js')
+const {updateMatchesMinus15Days} = require('./services/updateMatchStatus'); 
 
 dotenv.config();
 
@@ -88,10 +89,11 @@ app.use('/api/admin',auth,adminRoutes);
 app.use('/api/training',auth,trainingRoutes);
 app.use('/api/events',auth,eventsRoutes);
 app.use('/api/poll',auth,pollRoutes);
+app.use('/api/rewards',auth,rewardRoutes);
+
 //updateMatchStatus();
- //generateBotsForTeam("Pandurii");
-
-
+//generateBotsForTeam("FCSB");
+//updateMatchesMinus15Days();
 
 cron.schedule("* * * * *", async () => {
   await simulateMatches();

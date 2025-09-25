@@ -88,8 +88,8 @@ router.get("/:id", async (req, res) => {
     const matchId = req.params.id;
 
     const match = await Match.findById(matchId)
-      .populate("homeTeam", "name manager imageUrl savedFormation formationType")
-      .populate("awayTeam", "name manager imageUrl savedFormation formationType")
+      .populate("homeTeam", "name manager imageUrl savedFormation formationType clubOvr")
+      .populate("awayTeam", "name manager imageUrl savedFormation formationType clubOvr")
       .populate("league", "name flag")
       .populate("season", "year isActive")
       .populate({

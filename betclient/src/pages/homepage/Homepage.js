@@ -176,6 +176,44 @@ function Homepage() {
 
   const formatter = new Intl.DateTimeFormat("en-US", options);
 
+const [rewards, setRewards] = useState([]);
+useEffect(() => {
+
+    const fetchRewards = async () => {
+      const res = await fetch(`${process.env.REACT_APP_API}/rewards`, {
+        headers: {
+          "x-auth-token": token,
+        },
+      });
+      const data = await res.json();
+      setRewards(data);
+    }
+    fetchRewards();
+  }, [token]);
+
+
+  const collectReward = async (id) => {
+  try {
+    
+    const res = await fetch(`${process.env.REACT_APP_API}/rewards/${id}/collect`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-auth-token": token },
+    });
+    console.log(res);
+    const data = await res.json();
+    if (res.ok) {
+      setRewards(rewards.filter((r) => r._id !== id)); // scoatem reward-ul colectat
+      //alert("✅ Reward colectat!");
+      showNotification("success","Collected",`✅ You have collected `+data.reward.cash+` cash and `+data.reward.trainingPoints+` training points!`);
+    } else {
+      showNotification("danger","Error",data.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("❌ Eroare la colectarea rewardului");
+  }
+};
+
   return (
     <>
     <div className="index-home-container">
@@ -349,6 +387,40 @@ function Homepage() {
                 )}
               </div>
             </div>
+
+          <div className="rewards-container relative p-6 backdrop-blur-md">
+            <h3 className="text-2xl font-bold text-center mb-6 text-white drop-shadow-lg tracking-wide">
+              Rewards
+            </h3>
+
+            <div className="rewards-list flex gap-6 flex-wrap">
+              {rewards.length > 0 ? (
+                rewards.map((reward) => (
+                  <div
+                    key={reward._id}
+                    className="reward-card  group relative rounded-xl p-4 shadow-lg border border-white/10 bg-black/40 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] transition"
+                  >
+                    <p className="text-white font-semibold mb-2">
+                      🏆 Match: {reward.match?.stage}
+                    </p>
+                    <p className="text-yellow-300">💵 Cash: {reward.cash}</p>
+                    <p className="text-blue-300">
+                      🗼 Training Pts: {reward.trainingPoints}
+                    </p>
+
+                    <button
+                      onClick={() => collectReward(reward._id)}
+                      className="mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      Collect
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-400 text-center w-full">N-ai recompense necolectate.</p>
+              )}
+            </div>
+          </div>
 
             <div className="matches-container relative p-6 ">
               {/* glowing lights */}

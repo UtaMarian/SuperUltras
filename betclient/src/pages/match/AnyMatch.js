@@ -3,6 +3,7 @@ import "../../styles/match.css";
 import { useParams } from "react-router-dom";
 import MatchStats from "./MatchStats";
 import { useTranslation } from "react-i18next";
+import Supporters from "./Supporters";
 
 function AnyMatch() {
   const [match, setMatch] = useState(null);
@@ -10,7 +11,7 @@ function AnyMatch() {
   const token = localStorage.getItem("token");
   const { id } = useParams();
   const { t } = useTranslation();
-
+  const [activeTab, setActiveTab] = useState('Meci');
   const fetchMatch = async () => {
     try {
       const res = await fetch(`${process.env.REACT_APP_API}/matches/${id}`, {
@@ -54,7 +55,25 @@ function AnyMatch() {
   }, [id]);
 
   if (!match) return <p>Loading match...</p>;
-
+    const renderActiveComponent = () => {
+            switch (activeTab) {
+                case 'Meci':
+                    return  <MatchStats 
+                      matchid={match._id} 
+                      homeTeamName={match.homeTeam.name} 
+                      awayTeamName={match.awayTeam.name}  
+                      onRefreshMatch={fetchMatch} 
+                      any={true} 
+                      goals={match.goals || []} // transmitem lista de marcatori
+                    />;
+                case 'Tactica':
+                    return <p>Tactica</p>;
+                case 'Suporteri':
+                    return <Supporters matchid={match._id} />;
+                default:
+                    return null;
+            }
+        };
   return (
     <div className="match-page">
       <div className="match-container  backdrop-blur-xl bg-gradient-to-br from-gray-800/50 via-violet-800/30 to-rose-900/50">
@@ -71,6 +90,7 @@ function AnyMatch() {
               <div className="team-stats">
               {match.status === "finished" ? (
                 <div className="finished-info">
+                  <span className="stat supporters">⚽ {match.homeTeam.clubOvr}</span>
                   <span className="stat supporters">🔥 {match.homeInfluence}</span>
                   <div className="scorers">
 
@@ -80,8 +100,11 @@ function AnyMatch() {
                       .join(", ") || ""}
                   </div>
                 </div>
-              ) : (
-                <span className="stat supporters">🔥 {match.homeInfluence}</span>
+              ) : (<>
+                    <span className="stat supporters">⚽ {match.homeTeam.clubOvr}</span>
+                    <span className="stat supporters">🔥 {match.homeInfluence}</span>
+                  </>
+                
               )}
             </div>
 
@@ -108,7 +131,9 @@ function AnyMatch() {
               <div className="team-stats">
                 {match.status === "finished" ? (
                 <div className="finished-info">
-                  <span className="stat supporters">🔥 {match.awayInfluence}</span>
+                 
+                  <span className="stat supporters">⚽ {match.awayTeam.clubOvr}</span>
+                   <span className="stat supporters">🔥 {match.awayInfluence}</span>
                   <div className="scorers">
 
                     {match.goals
@@ -117,8 +142,11 @@ function AnyMatch() {
                       .join(", ") || ""}
                   </div>
                 </div>
-              ) : (
-                <span className="stat supporters">🔥 {match.homeInfluence}</span>
+              ) : (<>
+                  
+                  <span className="stat supporters">⚽ {match.awayTeam.clubOvr}</span>
+                  <span className="stat supporters">🔥 {match.awayInfluence}</span>
+                </>
               )}
               </div>
             </div>
@@ -131,14 +159,29 @@ function AnyMatch() {
         </div>
       </div>
 
-      <MatchStats 
-        matchid={match._id} 
-        homeTeamName={match.homeTeam.name} 
-        awayTeamName={match.awayTeam.name}  
-        onRefreshMatch={fetchMatch} 
-        any={true} 
-        goals={match.goals || []} // transmitem lista de marcatori
-      />
+     <div className='tabcontainer club-navbar'>
+            <div
+              className={`tabitem ${activeTab === 'Meci' ? 'active' : ''}`}
+              onClick={() => setActiveTab('Meci')}
+            >
+                {t("games.match")}
+            </div>
+            <div
+              className={`tabitem ${activeTab === 'Tactica' ? 'active' : ''}`}
+              onClick={() => setActiveTab('Tactica')}
+            >
+                {t("games.tactics")}
+            </div>
+            <div
+              className={`tabitem ${activeTab === 'Suporteri' ? 'active' : ''}`}
+              onClick={() => setActiveTab('Suporteri')}
+            >
+                {t("games.supporters")}
+            </div>
+        </div>
+        <div className='tabcontent'>
+            {renderActiveComponent()}
+        </div>
     </div>
   );
 }

@@ -138,7 +138,8 @@ router.post(
               favoriteTeam:user.favTeam,
               role:user.role,
               trainingPoints:user.player.trainingPoints,
-              level:user.player.level
+              level:user.player.level,
+              tutorialCompleted: user.tutorialCompleted
             }
           };
   

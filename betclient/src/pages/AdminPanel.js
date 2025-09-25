@@ -3,9 +3,7 @@ import '../styles/admin.css'
 import TeamComponent from './admin/TeamComponent';
 import LeagueComponent from './admin/LeagueComponent';
 import CountryComponent from './admin/CountryComponent';
-import BetComponent from './admin/BetComponent';
 import UserComponent from './admin/UserComponent';
-import GamesPlayedComponent from './admin/GamesPlayedComponent';
 import RankComponent from './admin/RankComponent';
 import AuthContext from '../AuthContext';
 import UltrasLeagueAdminComponent from './admin/UltrasLeagueAdmin';
@@ -13,7 +11,7 @@ import EventComponent from './admin/EventComponent';
 
 function AdminPanel() {
   const { user } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState('Bet');
+  const [activeTab, setActiveTab] = useState('Ligi');
 
   const renderActiveComponent = () => {
     switch (activeTab) {
@@ -23,15 +21,11 @@ function AdminPanel() {
             return <LeagueComponent />;
         case 'Tari':
             return <CountryComponent />;
-        case 'Bet':
-            return <BetComponent />;
         case 'User':
             return <UserComponent />;
-        case 'GamesPlayed':
-            return <GamesPlayedComponent />;
         case 'Rank':
             return <RankComponent />;
-        case 'UltrasLeague':
+        case 'GenerateCup':
             return <UltrasLeagueAdminComponent />;
         case 'Event':
             return <EventComponent />;
@@ -77,25 +71,15 @@ console.log(isModerator);
             >
               Utilizatori
             </div>
-            <div
-              className={`tabitem ${activeTab === 'GamesPlayed' ? 'active' : ''}`}
-              onClick={() => setActiveTab('GamesPlayed')}
-            >
-              Meciuri jucate
-            </div>
+       
           </>
         )}
+    
         <div
-          className={`tabitem ${activeTab === 'Bet' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Bet')}
+          className={`tabitem ${activeTab === 'GenerateCup' ? 'active' : ''}`}
+          onClick={() => setActiveTab('GenerateCup')}
         >
-          Pariuri
-        </div>
-        <div
-          className={`tabitem ${activeTab === 'UltrasLeague' ? 'active' : ''}`}
-          onClick={() => setActiveTab('UltrasLeague')}
-        >
-          UltrasLeague
+          Generate Cup
         </div>
         <div
           className={`tabitem ${activeTab === 'Event' ? 'active' : ''}`}

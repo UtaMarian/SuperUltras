@@ -73,8 +73,9 @@ const Transfers = () => {
     <div>
       <h3>Transfer Market</h3>
 
+      <h1 className='items-center text-center text-2xl font-bold'> Cooming soon...</h1>
       {/* Filter Section */}
-      <div className="filters">
+      {/* <div className="filters">
         <input
           type="text"
           placeholder="Search by name"
@@ -104,11 +105,11 @@ const Transfers = () => {
           onChange={(e) => setMinLevel(Number(e.target.value))}
         />
         <button className='btn btn-primary' onClick={resetFilters}>Reset</button>
-      </div>
+      </div> */}
       
 
       {/* Players Table */}
-      <table className="table table-hover table-striped">
+      {/* <table className="table table-hover table-striped">
         <thead>
           <tr>
             <th>Name</th>
@@ -129,10 +130,10 @@ const Transfers = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
 
       {/* Pagination */}
-      <div className="pagination">
+      {/* <div className="pagination">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
           <button
             key={number}
@@ -143,7 +144,7 @@ const Transfers = () => {
             {number}
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

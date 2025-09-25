@@ -189,7 +189,16 @@ margin-right: auto;
 .colect-button {
   margin-left: 10px;
 }
+.colect-button {
+  background-color: #007D0F; /* verde default */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+.colect-button.collected {
+  background-color: #198754; /* culoare nouă după colect */
+  transform: scale(1.05);
+  color:white;
+}
 .colect-button-danger {
   margin-left: 10px;
   background-color: red;
@@ -389,5 +398,56 @@ margin-right: auto;
   .bet-option {
     width: 100%;
     font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .match-container-bets {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* 🔹 Responsivitate */
+@media (max-width: 768px) {
+  .match-container-bets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .team_logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .team_name {
+    font-size: 16px;
+  }
+
+  .team_score {
+    font-size: 20px;
+  }
+
+  .bet-option {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .colect-button,
+  .colect-button-danger {
+    font-size: 16px;
+    padding: 8px 16px;
   }
 }

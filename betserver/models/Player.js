@@ -21,14 +21,7 @@ const PlayerSchema = new Schema({
 
   // câte sesiuni de training mai are jucătorul (poți reseta zilnic/pe săptămână)
   trainingPoints: { type: Number, default: 5 },
-  trophies: [
-    {
-      league: { type: Schema.Types.ObjectId, ref: "League" }, // competiția
-      season: { type: Schema.Types.ObjectId, ref: "Season" }, // sezonul
-      year: Number,
-      name: String 
-    }
-  ],
+
   matches:{ type: Number, default: 0 },
   totalInfluence: { type: Number, default: 0 },
   totalGoals: { type: Number, default: 0 },

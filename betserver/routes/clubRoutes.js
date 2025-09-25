@@ -38,7 +38,7 @@ router.get("/:clubid/players", async (req, res) => {
     }
 
     // Ia toți jucătorii care aparțin echipei
-    const players = await Player.find({ team: club._id });
+    const players = await Player.find({ team: club._id }).populate("user", "_id") ;
     res.json(players);
   } catch (err) {
     console.error(err);

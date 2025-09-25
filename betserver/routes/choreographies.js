@@ -77,6 +77,25 @@ router.get("/match/:matchId", async (req, res) => {
   }
 });
 
+// GET - toate coregrafiile pentru un meci (doar user, team și moneyTicket)
+router.get("/supporters/:matchId", async (req, res) => {
+  try {
+    const choreographies = await Choreography.find(
+      { match: req.params.matchId },
+      "moneyTicket user team" // select only these fields
+    )
+      .populate("user", "username profilePicture") // only username + profilePicture
+      .populate("team", "name imageUrl") // only team name
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json(choreographies);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Eroare la obținerea coregrafiilor" });
+  }
+});
+
 // GET - coregrafiile unui user
 router.get("/user/:userId", async (req, res) => {
   try {

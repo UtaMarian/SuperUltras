@@ -9,11 +9,55 @@ import { showNotification } from '../../utils/NotificationMan.js';
 import '../../styles/header.css';
 import '../../styles/bets.css';
 import BarLoader from 'react-spinners/BarLoader';
-import MvpIcon from '../../assets/icons/mvp.png';
+
 import PlayerStatsCard from './PlayerStatsCard.js';
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
+import ReactCardFlip from 'react-card-flip';
+
+const TrophyCard = ({ trophy }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleClick = () => setIsFlipped(!isFlipped);
+
+  return (
+    <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+      {/* Front */}
+      <div
+        className="relative w-32 h-40 rounded-2xl bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105"
+        onClick={handleClick}
+      >
+        {/* Glowing lights */}
+        <div className="absolute w-24 h-24 -top-6 -z-10 rounded-full bg-gradient-to-tr from-rose-400 via-fuchsia-500 to-purple-500 blur-3xl opacity-70"></div>
+        <div className="absolute w-24 h-24 -bottom-6 -z-10 rounded-full bg-gradient-to-bl from-pink-400 via-red-400 to-rose-500 blur-2xl opacity-60"></div>
+
+        {/* Trophy icon */}
+        <div
+          className={`w-16 h-16 bg-contain bg-no-repeat trophy trophy-${trophy.name
+            .replace(/\s+/g, "-")
+            .toLowerCase()}`}
+        ></div>
+      </div>
+
+      {/* Back */}
+      <div
+        className="relative w-32 h-40 rounded-2xl bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105"
+        onClick={handleClick}
+      >
+        {/* Glowing lights behind still visible */}
+        <div className="absolute w-28 h-28 -top-6 -z-10 rounded-full bg-gradient-to-tr from-rose-400 via-fuchsia-500 to-purple-500 blur-3xl opacity-70"></div>
+        <div className="absolute w-20 h-20 -bottom-6 -z-10 rounded-full bg-gradient-to-bl from-pink-400 via-red-400 to-rose-500 blur-2xl opacity-60"></div>
+
+        {/* Trophy name and year */}
+        <div className="text-center text-white font-bold text-sm sm:text-base">
+          {trophy.name} <span className="text-white">({trophy.year})</span>
+        </div>
+      </div>
+    </ReactCardFlip>
+  );
+};
+
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -419,45 +463,14 @@ const Profile = () => {
       <div className="trophies-section">
         <h3>{t("profile.trophies")}</h3>
         <div className="trophies">
-              
-            <div className='trophy-section'>
-                <div className="trophy trophy-international-cup"></div>
-                <div className='trophy-name'>Cupa Campionilor</div>
-            </div>
-            <div className='trophy-section'>
-                <div className="trophy trophy-ultra-cup"></div>
-                <div className='trophy-name'>Ultras League</div>
-            </div>
-            <div className="relative">
-              {/* Badge trofee */}
-              <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-[#c31432] text-white font-bold px-2 py-1 rounded-full shadow-lg shadow-slate-500 text-xl">
-                x3
-              </div>
-
-              {/* Card content */}
-              <div className="trophy-section text-center h-[260px]">
-                <div className="trophy trophy-campionat"></div>
-                <div className="trophy-name mt-2">Campionat</div>
-              </div>
-            </div>
-            <div className='trophy-section'>
-                <div className="trophy trophy-national-cup"></div>
-                <div className='trophy-name'>Cupa Nationala</div>
-            </div>
-            <div className='trophy-section'>
-                <div className="trophy trophy-international-supercup"></div>
-                <div className='trophy-name'>Supercupa Internationala</div>
-            </div>
-            <div className='trophy-section'>
-                <div className="trophy trophy-national-supercup"></div>
-                <div className='trophy-name'>Supercupa Nationala</div>
-            </div>
-            <div className='trophy-section'>
-                <img src={MvpIcon} alt="MVP" className='mvp-icon' title="MVP" />
-                <div className='trophy-name'>MVP</div>
-            </div>
+              {!user.trophies && <p className='text-white'>No trophies yet. Play more to earn some!</p>}
+              {user.trophies && user.trophies.length > 0 && user.trophies.map((trophy, index) => (
+            <TrophyCard key={index} trophy={trophy} />
+          ))}
+          
         </div>
-        <div className='player-bio-stats'>
+
+        {/* <div className='player-bio-stats'>
            
           <PlayerStatsCard player={{
   name: "Cristiano Ronaldo",
@@ -468,7 +481,8 @@ const Profile = () => {
   influence: 200,
   wonBets: 120
 }} />
-        </div>
+        </div> */}
+
       </div>
       </div>
     </div>

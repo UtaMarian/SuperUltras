@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 const flags = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R','S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-const colors=['red','blue','green','white','black','yellow','purple','#FC4F00','#05BFDB','#16FF00','#DB005B','#4F200D','#00DFA2'];
+const colors=['#da201e','#ef6d32','#fae137','#1f41a1','#1f569c','#2898d7','#0d7750','white','#08111a','#65398b','#832d36'];
 const images=[IcoBall,IcoConfetti,IcoTrophy,IcoMedal,IcoStadium,Fire,Ultra,Roumnaia];
 const moneyValues = {
     letter: 10,

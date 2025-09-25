@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const SeasonSchema = new Schema({
+  name: { type: String,  unique: true }, // e.g. "2024/2025"
   league: { type: Schema.Types.ObjectId, ref: "League", required: true },
   year: { type: Number, required: true }, // e.g. 2025
   startedAt: { type: Date, default: Date.now },

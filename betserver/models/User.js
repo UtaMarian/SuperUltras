@@ -17,6 +17,16 @@ const UserSchema = new mongoose.Schema({
   lastLogin: Date,
   lastCashCollectionDate: Date,
   player: {type: mongoose.Schema.Types.ObjectId,ref: 'Player'},
+  tutorialCompleted: { type: Boolean, default: false },
+  trophies: [
+  {
+    league: { type: mongoose.Schema.Types.ObjectId, ref: "League" }, // competiția
+    season: { type: mongoose.Schema.Types.ObjectId, ref: "Season" }, // sezonul
+    year: String,
+    name: String,
+    numbers: { type: Number, default: 1 }
+  }
+],
 });
 
 // Pre-save hook to format cash to two decimal places

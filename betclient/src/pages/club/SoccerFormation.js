@@ -7,6 +7,7 @@ import DefaultProfilePicture from '../../assets/icons/man.png';
 import Jersey from '../../components/Jersey';
 import AuthContext from '../../AuthContext';
 import { useTranslation } from "react-i18next";
+import { Link } from 'react-router-dom';
 const ItemTypes = {
   PLAYER: 'player',
 };
@@ -47,6 +48,7 @@ const Player = ({ player, index }) => {
   });
 
   return (
+   
     <tr
       ref={drag}
       style={{
@@ -58,7 +60,11 @@ const Player = ({ player, index }) => {
       {/*<td ><img src={process.env.REACT_APP_LOGO + `/${player.icon}`} alt='logo' className="table-player-picture" title={player.icon} /></td>*/}
       <td><img src={DefaultProfilePicture} alt='logo' className="table-player-picture" title={player.icon}/></td>
       <td className="table-player-name">
-        {/* <a href={`/profile/${player._id}`}>{player.name}</a></td> */}{player.name}</td>
+         <Link to={`/profile/${player.user?._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        {/* <a href={`/profile/${player._id}`}>{player.name}</a></td> */}{player.name}
+        </Link>
+       </td>
+        
       <td >
         <div className="table-player-level">
             <div class="medal-content">{player.level}</div>
@@ -75,6 +81,7 @@ const Player = ({ player, index }) => {
       <td className="tableplayer-matches">{player.influence}</td>
       <td ><button className='btn btn-outline-danger'>X</button></td>
     </tr>
+    
   );
 };
 

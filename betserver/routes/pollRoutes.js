@@ -3,6 +3,7 @@ const router = express.Router();
 const Poll = require('../models/Poll');
 const authMiddleware = require('../middleware/auth'); // middleware to get user from token
 const User = require('../models/User');
+const TeamModel = require('../models/Team');
 
 // Create a poll
 router.post('/vote-manager', async (req, res) => {
@@ -36,6 +37,28 @@ router.post('/vote-manager', async (req, res) => {
   }
 });
 
+// Create a poll
+router.post('/change-manager', async (req, res) => {
+  try {
+    const { clubId, managerId } = req.body;
+    if (!clubId || !managerId) {
+      return res.status(400).json({ msg: 'Missing fields' });
+    }
+
+    const club =await TeamModel.findById(clubId);
+    if(!club){
+      return res.status(404).json({ msg: 'Club not found' });
+    }
+    club.manager=managerId;
+    await club.save();
+
+
+    res.status(200).json({ msg: 'Manager changed' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 // Get polls for a club
 router.get('/myclub', async (req, res) => {

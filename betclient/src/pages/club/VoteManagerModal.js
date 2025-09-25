@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../../AuthContext";
 import { showNotification } from "../../utils/NotificationMan";
 
-function VoteManagerModal({ isOpen, onClose, clubId }) {
+function VoteManagerModal({ isOpen, onClose, clubId,type }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const { user } = useContext(AuthContext);
@@ -56,6 +56,32 @@ function VoteManagerModal({ isOpen, onClose, clubId }) {
     }
   };
 
+   const handleChangeManager = async () => {
+    if (!selectedUser) return alert("Select a user to be the new manager");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API}/poll/change-manager`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify({
+          clubId,
+          managerId: selectedUser._id,
+        }),
+      });
+      if (res.ok) {
+        showNotification("success","Manager"," Manager was changed.");
+        onClose();
+      }else{
+        showNotification("danger","Error"," Could not change manager.");
+      }
+    } catch (err) {
+      console.error(err);
+      showNotification("danger","Error",err.msg);
+    }
+  };
   if (!isOpen) return null;
 
   return (
@@ -82,12 +108,20 @@ function VoteManagerModal({ isOpen, onClose, clubId }) {
           >
             Cancel
           </button>
+          {type==="change"?
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={handleChangeManager}
+          >
+            Change Manager
+          </button>
+          :
           <button
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             onClick={handleVote}
           >
             Vote
           </button>
+    }
         </div>
       </div>
     </div>

@@ -178,12 +178,12 @@ const navigate = useNavigate();
           {activeTab === 'standings' && (
             <table className="table table-hover table-league">
               <thead className='table-head-league'>
-                <tr className='table-head-league'>
+                <tr className='table-head-league '>
                   <th>#</th>
                   <th>{t("standings.team")}</th>
-                  <th>{t("standings.form")}</th>
-                  <th>{t("standings.played")}</th>
-                  <th>{t("standings.wins")}</th>
+                  <th className='responsive_hidden'>{t("standings.form")}</th>
+                  <th >{t("standings.played")}</th>
+                  <th >{t("standings.wins")}</th>
                   <th>{t("standings.draws")}</th>
                   <th>{t("standings.losses")}</th>
                   <th>{t("standings.points")}</th>

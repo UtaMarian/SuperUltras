@@ -1,8 +1,9 @@
 .traing-container{
-    background-image: url('../assets/covers/rivals.png'); 
+    background-image: url('../assets/covers/rivals.png'); /* Path to your image */ 
     background-size: cover; /* Ensure the image covers the entire element */
     background-repeat: no-repeat; /* Prevent image repetition */
     width: 100%;
+
 }
 .medal-content {
     font-size: 1em;

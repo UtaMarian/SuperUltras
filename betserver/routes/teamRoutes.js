@@ -271,4 +271,18 @@ router.get("/:id/trophies", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// GET records pentru o echipă
+router.get("/:id/records", async (req, res) => {
+  try {
+    const team = await Team.findById(req.params.id).populate("records");
+    if (!team) return res.status(404).json({ message: "Team not found" });
+
+    console.log("Team records:", team.records);
+    res.json(team.records);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
   module.exports = router;

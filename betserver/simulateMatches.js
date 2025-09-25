@@ -2,10 +2,15 @@ const Match = require("./models/Match");
 const Player = require("./models/Player");
 const Team = require("./models/Team");
 const UserBets = require("./models/UserBets");
+const Choreography = require("./models/Choreography");
+const Reward = require("./models/Reward");
+const User = require("./models/User");
 
 // ------------------- SIMULARE NORMALĂ (cu delay) -------------------
 async function simulateMatches() {
+  //finishMatch("68c584a2c9033e6413f9fa30")
   const now = new Date();
+  //const now = new Date(moment.getTime() + 24 * 60 * 60 * 1000)
   console.log("🔄 Simulating matches at", now);
 
   const scheduledMatches = await Match.find({
@@ -79,8 +84,8 @@ async function finishMatch(matchId) {
       const homeLevel = homePlayers.reduce((s, p) => s + p.level, 0) + match.homeInfluence;
       const awayLevel = awayPlayers.reduce((s, p) => s + p.level, 0) + match.awayInfluence;
 
-      homeScore = generateGoals(homeLevel, awayLevel, true);
-      awayScore = generateGoals(awayLevel, homeLevel, false);
+      homeScore = generateGoals(homeLevel, awayLevel, true, match.homeInfluence, match.awayInfluence);
+      awayScore = generateGoals(awayLevel, homeLevel, false , match.homeInfluence, match.awayInfluence);
 
       homeScorers = await assignGoals(homePlayers, homeScore, match.homeTeam._id);
       awayScorers = await assignGoals(awayPlayers, awayScore, match.awayTeam._id);
@@ -116,12 +121,112 @@ async function finishMatch(matchId) {
       }
       await bet.save();
     }
-
     console.log(`💰 Bets updated for match ${match._id}`);
-  } catch (err) {
-    console.error("❌ Error finishing match:", err);
-  }
-}
+
+   const choreographies = await Choreography.find(
+      { match: match._id },
+      "moneyTicket user team"
+    ).populate("user", "username");
+
+    // 🔹 Grupăm coregrafiile după user
+    const userMap = new Map();
+
+    for (const choreo of choreographies) {
+      const userId = choreo.user._id.toString();
+      if (!userMap.has(userId)) {
+        userMap.set(userId, {
+          user: choreo.user,
+          totalMoneyTicket: 0
+        });
+      }
+      userMap.get(userId).totalMoneyTicket += choreo.moneyTicket;
+    }
+    // 🔹 Obținem lista de utilizatori unici + totalMoneyTicket
+    const uniqueUsers = Array.from(userMap.values());
+    console.log(uniqueUsers);
+
+    
+    // 🔹 rewardsMap = agregăm toate recompensele aici
+    const rewardsMap = new Map();
+
+     if (uniqueUsers.length > 0) {
+    //   // Recompense default pentru fiecare user cu coregrafie
+       // 🔹 Default rewards pentru fiecare user cu coregrafie
+        for (const u of uniqueUsers) {
+          rewardsMap.set(u.user._id.toString(), {
+            user: u.user,
+            cash: 50,
+            trainingPoints: 1
+          });
+        }
+
+      // 🔹 MVP: userul cu cele mai multe moneyTicket
+        const mvp = uniqueUsers.reduce((max, u) =>
+          u.totalMoneyTicket > (max?.totalMoneyTicket || 0) ? u : max,
+          null
+        );
+
+        if (mvp) {
+          const userId = mvp.user._id;
+
+          if (!rewardsMap.has(userId.toString())) {
+            rewardsMap.set(userId.toString(), { user: mvp.user, cash: 0, trainingPoints: 0 });
+          }
+
+          // ➕ Recompense MVP
+          const reward = rewardsMap.get(userId.toString());
+          reward.cash += 250;
+          reward.trainingPoints += 3;
+
+          // 🏆 Trofeu MVP (verificăm și incrementăm / creăm dacă nu există)
+          const user = await User.findById(userId);
+
+          if (user) {
+            const existingTrophy = user.trophies.find(t => t.name === "MVP");
+            if (existingTrophy) {
+              existingTrophy.numbers += 1;
+            } else {
+              user.trophies.push({
+                name: "MVP",
+                year: new Date().getFullYear().toString(),
+                numbers: 1
+              });
+            }
+            await user.save();
+          }
+        }
+
+
+
+              // 🔹 Bonus pentru marcatori
+              for (const goal of match.goals) {
+                const scorer = await Player.findById(goal.player).populate("user");
+                if (scorer?.user) {
+                  const id = scorer.user._id.toString();
+                  if (!rewardsMap.has(id)) {
+                    rewardsMap.set(id, { user: scorer.user, cash: 0, trainingPoints: 0 });
+                  }
+                  rewardsMap.get(id).cash += Math.floor(Math.random() * 91) + 10; // 10–100
+                  rewardsMap.get(id).trainingPoints += 1;
+                }
+              }
+              // 🔹 Salvăm în DB doar un reward per user
+                for (const reward of rewardsMap.values()) {
+                  await Reward.create({
+                    user: reward.user._id,
+                    match: match._id,
+                    cash: reward.cash,
+                    trainingPoints: reward.trainingPoints
+                  });
+                }
+
+                console.log("✅ Rewards generate:", Array.from(rewardsMap.values()));
+          }
+            console.log(`✅ Rewards generated for match ${match._id}`);
+          } catch (err) {
+            console.error("❌ Error finishing match:", err);
+          }
+        }
 
 // ------------------- Helpers -------------------
 async function assignGoals(players, goals, teamId) {
@@ -155,12 +260,22 @@ function randomMinute() {
   return Math.floor(Math.random() * 90) + 1;
 }
 
-function generateGoals(teamLevel, opponentLevel, isHome) {
+function generateGoals(teamLevel, opponentLevel, isHome, homeInfluence = 0, awayInfluence = 0) {
   let baseRate = 1.2;
+
+  // raportul de putere între echipe
   let strengthRatio = teamLevel / (teamLevel + opponentLevel);
   if (isHome) strengthRatio *= 1.1;
 
-  let expectedGoals = baseRate * (0.8 + Math.random() * 0.4) * (strengthRatio * 2);
+  // factor de influență al suporterilor
+  let totalInfluence = homeInfluence + awayInfluence;
+  let influenceRatio = totalInfluence > 0 
+    ? (isHome ? homeInfluence / totalInfluence : awayInfluence / totalInfluence) 
+    : 0.5; // dacă nu există influență, considerăm egal
+
+  // combinăm puterea echipei cu influența suporterilor
+  let expectedGoals = baseRate * (0.8 + Math.random() * 0.4) * (strengthRatio * 2) * (0.8 + 0.4 * influenceRatio);
+
   return poisson(expectedGoals);
 }
 

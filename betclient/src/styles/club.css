@@ -311,7 +311,7 @@
   
   .trophies {
     display: flex;
-    justify-content: space-around;
+    justify-content:center;
     gap:15px;
     flex-wrap: wrap;
   }
@@ -346,6 +346,14 @@
     background-position: -383px 0;
   }
 
+   .trophy-mvp {
+     background-image: url("../assets/icons/mvp.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 110px;
+       background-position: -13px 0px;
+  
+  }
     .trophy-ultras-cup {
     background-image: url("../assets/ultrascup2.png");
     background-repeat: no-repeat;
@@ -398,15 +406,26 @@
     
   }
 .trophy-section{
-    border: 1px solid rgb(206, 206, 206);
-    background-color: white;
+   
     padding: 20px;
     border-radius: 10px;
     width: 220px;
-    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
-    0 0  0 2px rgb(190, 190, 190),
-    0.3em 0.3em 1em rgba(0,0,0,0.3);
+  
+  
 }
+.club-content-background{
+      background-image: url('../assets//covers/game_bg.png');
+    position: relative;
+     background-size: auto;       /* don’t stretch */
+  background-position: top left;
+  color:white;
+  
+}
+.perspective { perspective: 1000px; }
+.transform-style-preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
+
 .season-table .trophy-icons{
     display: flex;
     text-align: center;
@@ -468,4 +487,16 @@
   padding: 5px;
   margin-top: 3px;
   margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+
+
+   .field {
+    width: 90%;
+    margin: 10px 0;
+    display: none;;
+  }
+
+
 }

@@ -345,11 +345,21 @@ router.post("/:id/end", async (req, res) => {
           trophies: {
             league: league._id,
             season: league.currentSeason?._id,
-            year: new Date().getFullYear(),
+            year: league.currentSeason?.name,
             name: "Campionat"
           }
         }
       });
+      const usersWithFavTeam = await User.find({ favoriteTeam: champion.team });
+      for (const user of usersWithFavTeam) {
+        user.trophies.push({
+          league: league._id,
+          season: league.currentSeason?._id,
+          year: league.currentSeason?.name,
+          name: "Campionat"
+        });
+        await user.save();
+      }
 
       return res.json({ message: "Season ended successfully", champion, standings: table });
     } 
@@ -481,6 +491,7 @@ router.get("/matches/:day", async (req, res) => {
       acc[leagueId].matches.push(match);
       return acc;
     }, {});
+
 
     res.json(Object.values(groupedByLeague));
   } catch (err) {

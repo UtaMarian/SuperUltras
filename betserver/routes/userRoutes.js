@@ -9,6 +9,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const Rank= require('../models/Rank');
 const Player= require('../models/Player');
+const ContactsModel = require("../models/Contacts");
 
 // GET all users
 router.get('/', async (req, res) => {
@@ -239,4 +240,23 @@ router.post(
   }
 );
 
+router.post("/contactus", async (req, res) => {
+  const { email, title, content } = req.body;
+
+  if (!email || !title || !content) {
+    return res.status(400).json({ msg: "Please fill in all fields" });
+  }
+  try {
+    const newContact = new ContactsModel({
+      email,
+      title,
+      content,
+    });
+    await newContact.save();
+    res.status(200).json({ msg: "Ticket submitted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
 module.exports = router;

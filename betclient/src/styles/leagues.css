@@ -110,15 +110,15 @@ table .table ,th ,tr ,td{
 }
 .green-row {
   background-color: rgba(0, 200, 0, 0.8) !important;
-border-top: #dcffe5 solid 2px !important;
+
 }
 .yellow-row{
      background-color: rgba(200, 197, 0, 0.8) !important;
-border-top: #feffdc solid 2px !important;
+
 }
 .blue-row {
   background-color: rgba(0, 100, 255, 0.8) !important;
-  border-top: #e2e7ff solid 2px !important;
+ 
 }
 
 .red-row {
@@ -176,6 +176,9 @@ border-top: #feffdc solid 2px !important;
     }
     .table-league .responsive_hidden{
         display: none;
+    }
+    table tr, table td{
+        border: none !important;
     }
 
 

@@ -1,22 +1,15 @@
 // src/components/Header.js
 
-import React, { useContext, useState } from 'react';
+import  { useContext} from 'react';
 import AppIcons from '../assets/icons/icons8-league-64.png';
 import AuthContext from '../AuthContext';
-import MyBetsIcon from '../assets/icons/bet.png';
 import '../styles/header.css';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Badge from 'react-bootstrap/esm/Badge';
 import { formatMoney } from '../utils/FormatMoney.js';
-import { Navigate, useNavigate } from 'react-router-dom';
 import BallIcon from '../assets/icons/training.png';
 
-
 const Header = () => {
-  const token = localStorage.getItem('token');
-  const { user, isAuthenticated, loading } = useContext(AuthContext);
 
+  const { user, loading } = useContext(AuthContext);
 
   if (loading) return <p>Loading...</p>;
 
@@ -38,6 +31,7 @@ const Header = () => {
         </div>
 
       </div>
+      
     </div>
   );
 };

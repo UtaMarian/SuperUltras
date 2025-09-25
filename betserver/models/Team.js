@@ -13,7 +13,7 @@ const TeamSchema = new Schema({
     {
       league: { type: Schema.Types.ObjectId, ref: "League" }, // competiția
       season: { type: Schema.Types.ObjectId, ref: "Season" }, // sezonul
-      year: Number,
+      year: String,
       name: String 
     }
   ],

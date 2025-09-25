@@ -9,6 +9,7 @@ import AuthContext from '../../AuthContext';
 import { useTranslation } from "react-i18next";
 import VoteManagerModal from './VoteManagerModal';
 import PollModal from './PollModal';
+import BallIcon from '../../assets/icons/soccer-ball.png';
 
 function IndexClub() {
     const { id } = useParams();
@@ -102,20 +103,35 @@ function IndexClub() {
                     </div>
                     
                   </div>
+                  
                 )}
+                <div className="mt-3">
+                <div className="flex gap-2">
+                  
+                  {/* Badge pentru OVR */}
+                  <div className="px-3 py-1 bg-blue-600 text-white text-sm font-semibold rounded-full shadow ">
+                    OVR: {team.clubOvr}
+                    
+                  </div>
+
+                  {/* Badge pentru Influence */}
+                  <div className="px-3 py-1 bg-purple-600 text-white text-sm font-semibold rounded-full shadow">
+                    Influence: {team.seasonInfluence}
+                  </div>
+                  </div>
+                </div>
               </div>
+             
             </div>
 
             {/* Dreapta: butoane */}
             <div className="flex space-x-2">
               {team?.manager&& (team.manager._id===user.user.id)?
               <>
-                <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() =>  setVoteModalOpen(true)}>
                   {t("club.changemanager")}
                 </button>
-                <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
-                  {t("club.kickplayer")}
-                </button>
+               
               </>
               :<></>}
           
@@ -152,15 +168,21 @@ function IndexClub() {
         {t("club.transfers")}
       </div>
     </div>
-    <div className='tabcontent'>
+    <div className='tabcontent '>
         {renderActiveComponent()}
     </div>
     <VoteManagerModal
       isOpen={isVoteModalOpen}
       onClose={() => setVoteModalOpen(false)}
       clubId={team._id}
+      type="vote"
     />
-
+    <VoteManagerModal
+      isOpen={isVoteModalOpen}
+      onClose={() => setVoteModalOpen(false)}
+      clubId={team._id}
+      type="change"
+    />
    
    </>)}
   </div>

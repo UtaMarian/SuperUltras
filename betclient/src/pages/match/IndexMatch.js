@@ -3,6 +3,7 @@ import "../../styles/match.css";
 import MatchStats from "./MatchStats";
 import { useTranslation } from "react-i18next";
 import { Commet } from 'react-loading-indicators';
+import Supporters from "./Supporters";
 
 function IndexMatch() {
   const [match, setMatch] = useState(null);
@@ -63,7 +64,7 @@ function IndexMatch() {
             case 'Tactica':
                 return <p>Tactica</p>;
             case 'Suporteri':
-                return <p>Suporteri</p>;
+                return <Supporters matchid={match._id} />;
             default:
                 return null;
         }
@@ -82,7 +83,7 @@ function IndexMatch() {
           <div className="team-info-container">
             <h3>{match.homeTeam.name}</h3>
             <div className="team-stats">
-              <span className="stat power">🎖️ {match.homeTeam.clubOvr}</span>
+              <span className="stat supporters">⚽ {match.homeTeam.clubOvr}</span>
               <span className="stat supporters">🔥 {match.homeInfluence}</span>
             </div>
           </div>
@@ -99,8 +100,8 @@ function IndexMatch() {
           <div className="team-info-container">
             <h3 >{match.awayTeam.name}</h3>
             <div className="team-stats">
-              <span className="stat supporters">⚡ {match.awayInfluence}</span>
-              <span className="stat power">🎖️ {match.awayTeam.clubOvr}</span>
+              <span className="stat supporters">🔥 {match.awayInfluence}</span>
+              <span className="stat supporters">⚽ {match.awayTeam.clubOvr}</span>
             </div>
           </div>
           <img

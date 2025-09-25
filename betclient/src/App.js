@@ -25,6 +25,7 @@ import ChampionsKnockout from './pages/standings/ChampionsKnockout';
 import Training from './pages/training/Training';
 import Events from './pages/events/Events';
 import EventPage from './pages/events/EventPage';
+import Contact from './pages/Contact';
 
 const AppContainer = styled.div`
   font-family: Arial, sans-serif;
@@ -39,6 +40,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/logout" element={<LogoutButton />} />
         <Route path="/test" element={<ChampionsKnockout />} />
         <Route path='/' element={<Layout />}>

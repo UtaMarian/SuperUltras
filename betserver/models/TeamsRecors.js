@@ -11,7 +11,6 @@ const TeamRecordsSchema = new Schema({
 
 });
 
-
 const TeamRecordsModel = model('TeamRecords', TeamRecordsSchema);
 
-module.exports = TeamModel;
+module.exports = TeamRecordsModel;
